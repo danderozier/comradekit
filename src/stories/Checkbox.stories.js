@@ -37,7 +37,7 @@ storiesOf("Checkbox", module)
               <pre>{{ value }}</pre>
             </FieldGroup>`,
       data: () => ({
-        value: false
+        value: null
       })
     };
   })

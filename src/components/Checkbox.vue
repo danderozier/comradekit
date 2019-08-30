@@ -58,7 +58,7 @@ export default {
     },
     value: {
       type: [Boolean, Array],
-      default: false
+      default: null
     }
   },
   data() {
@@ -161,7 +161,8 @@ export default {
       }
     }
 
-    &:checked {
+    &:checked,
+    &[indeterminate] {
       + .icon {
         ::v-deep rect {
           color: $primary-color;
@@ -190,10 +191,11 @@ export default {
     &[is-disabled],
     &[disabled] {
       + .icon {
+        opacity: 0.5 !important;
+
         ::v-deep rect {
           fill: currentColor !important;
           stroke: currentColor !important;
-          opacity: 0.5 !important;
         }
       }
     }
@@ -213,7 +215,8 @@ export default {
         }
       }
 
-      &:checked {
+      &:checked,
+      &[indeterminate] {
         + .icon {
           ::v-deep rect {
             fill: lighten($primary-color, 10);

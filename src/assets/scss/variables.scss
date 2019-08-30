@@ -15,6 +15,12 @@ $primary-color-inverse: white;
 $danger-color: red !default;
 $gray-color: gray !default;
 
+$gray-0: white;
+$gray-1: #FAFBFC;
+$gray-2: #F4F5F7;
+$gray-3: #EBECF0;
+$gray-4: #DFE1E6;
+
 $vertical-spacing-normal: 1rem;
 
 $input-font-size: 0.875rem;
@@ -22,17 +28,17 @@ $input-padding: 0.375rem !default;
 $input-border-width: 0.125rem !default;
 $input-border-style: solid !default;
 $input-border-radius: 0.25rem;
-$input-border-color: #dedede;
+$input-border-color: $gray-4;
 $input-border-color-focused: lighten($primary-color, 10);
 $input-border-color-invalid: red;
 $input-border-color-select: #eee;
 $input-border-color-select-hover: #ddd;
-$input-background-color: #fafafa;
-$input-background-color-disabled: #aaa;
-$input-background-color-focused: white;
-$input-background-color-hover: #eee;
-$input-background-color-select: #eee;
-$input-background-color-select-hover: #ddd;
+$input-background-color: $gray-1;
+$input-background-color-disabled: $gray-2;
+$input-background-color-focused: $gray-0;
+$input-background-color-hover: $gray-3;
+$input-background-color-select: $gray-2;
+$input-background-color-select-hover: $gray-3;
 $input-text-color: #333;
 $input-muted-text-color: #777;
 $input-transition: 0.2s ease-in-out;
