@@ -1,5 +1,5 @@
 <template>
-  <input-wrapper :is-focused="isFocused" :is-disabled="isDisabled">
+  <TextInputWrapper :is-focused="isFocused" :is-disabled="isDisabled">
     <input
       ref="input"
       type="text"
@@ -10,15 +10,15 @@
       @focus="onFocus"
       @blur="onBlur"
     />
-  </input-wrapper>
+  </TextInputWrapper>
 </template>
 
 <script>
-import InputWrapper from "./InputWrapper";
+import TextInputWrapper from "@/components/utilities/TextInputWrapper";
 
 export default {
   name: "TextInput",
-  components: { InputWrapper },
+  components: { TextInputWrapper },
   props: {
     value: {
       type: [Number, String],

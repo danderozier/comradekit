@@ -1,9 +1,10 @@
 <template>
-  <input-wrapper
+  <TextInputWrapper
     :is-focused="isFocused"
     :is-invalid="isInvalid"
     :is-loading="isLoading"
     :is-disabled="isDisabled"
+    :style="{ width }"
   >
     <textarea
       ref="textarea"
@@ -12,22 +13,22 @@
       :auto="height === 'auto'"
       :disabled="isDisabled"
       :rows="rows"
-      :style="{ height: currentHeight, width, maxHeight }"
+      :style="{ height: currentHeight, maxHeight }"
       v-on="listeners"
       @keydown="resize"
       @input="resize"
       @focus="onFocus"
       @blur="onBlur"
     />
-  </input-wrapper>
+  </TextInputWrapper>
 </template>
 
 <script>
-import InputWrapper from "@/components/InputWrapper";
+import TextInputWrapper from "@/components/utilities/TextInputWrapper";
 
 export default {
   name: "TextArea",
-  components: { InputWrapper },
+  components: { TextInputWrapper },
   props: {
     value: {
       type: String,
@@ -62,7 +63,7 @@ export default {
       default: "100%"
     },
     rows: {
-      type: String,
+      type: [Number, String],
       default: "3"
     }
   },
@@ -89,6 +90,7 @@ export default {
      */
     listeners() {
       const { input, ...listeners } = this.$listeners;
+      input;
       return listeners;
     }
   },

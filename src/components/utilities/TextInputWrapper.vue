@@ -1,12 +1,12 @@
 <template>
-  <div class="input-wrapper" v-on="$listeners" :is-focused="isFocused">
+  <div class="text-input-wrapper" v-on="$listeners" :is-focused="isFocused">
     <slot />
   </div>
 </template>
 
 <script>
 export default {
-  name: "input-wrapper",
+  name: "TextInputWrapper",
   props: {
     isFocused: {
       type: Boolean,
@@ -48,7 +48,7 @@ textarea {
   resize: vertical;
 }
 
-.input-wrapper {
+.text-input-wrapper {
   align-items: center;
   background-color: $input-background-color;
   border: $input-border-width $input-border-style $input-border-color;
@@ -118,6 +118,11 @@ textarea {
     );
     background-size: 300%;
     background-position: 0% 0%;
+
+    > textarea,
+    > input {
+      visibility: hidden;
+    }
   }
 
   &[is-compact] {

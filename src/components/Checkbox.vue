@@ -14,23 +14,29 @@
       :id="id"
       :is-invalid="isInvalid"
       :disabled="isDisabled"
+      :indeterminate="indeterminate"
       @focus="onFocus"
       @blur="onBlur"
       @change="onChange"
     />
-    <CheckboxIcon size="is-xsmall" />
+    <CheckboxIndeterminateIcon size="is-xsmall" v-if="indeterminate" />
+    <CheckboxIcon size="is-xsmall" v-else />
     <span v-if="$slots['default']" class="label"><slot /></span>
   </label>
 </template>
 
 <script>
 import CheckboxIcon from "@/components/icons/CheckboxIcon";
+import CheckboxIndeterminateIcon from "@/components/icons/CheckboxIndeterminateIcon";
 import _ from "lodash";
 
 export default {
   name: "Checkbox",
-  components: { CheckboxIcon },
+  components: { CheckboxIcon, CheckboxIndeterminateIcon },
   props: {
+    indeterminate: {
+      type: Boolean
+    },
     isBlock: {
       type: Boolean,
       default: false

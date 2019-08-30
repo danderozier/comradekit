@@ -1,6 +1,11 @@
 const path = require("path");
 
 module.exports = {
+  pluginOptions: {
+    storybook: {
+      allowedPlugins: ["sass-loader"]
+    }
+  },
   /**
    * Webpack configuration
    */
@@ -31,7 +36,7 @@ module.exports = {
   css: {
     loaderOptions: {
       sass: {
-        data: `@import "~@scss/variables.scss";`
+        prependData: `@import "~@scss/variables.scss";`
       }
     }
   }
