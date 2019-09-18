@@ -14,8 +14,9 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .text-renderer {
+  font-size: inherit;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;

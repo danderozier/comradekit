@@ -17,7 +17,7 @@
       isLoading
     </label>
 
-    <FieldGroup label="Text Input" required>
+    <Field label="Text Input" required>
       <TextInput
         v-model="text"
         :is-invalid="isInvalid"
@@ -25,9 +25,9 @@
         :is-select="isSelect"
         :is-loading="isLoading"
       />
-    </FieldGroup>
+    </Field>
 
-    <FieldGroup label="Textarea" required :errors="errors">
+    <Field label="Textarea" required :errors="errors">
       <TextArea
         v-model="textarea"
         :is-invalid="isInvalid"
@@ -35,7 +35,7 @@
         :is-select="isSelect"
         :is-loading="isLoading"
       />
-    </FieldGroup>
+    </Field>
 
     <Checkbox
       v-model="checkbox"
@@ -46,7 +46,7 @@
       >Checkbox</Checkbox
     >
 
-    <FieldGroup label="Inline Checkboxes" required :errors="errors">
+    <Field label="Inline Checkboxes" required :errors="errors">
       <Checkbox
         v-model="checkboxes"
         native-value="one"
@@ -75,9 +75,9 @@
         :is-disabled="isDisabled"
         >Four</Checkbox
       >
-    </FieldGroup>
+    </Field>
 
-    <FieldGroup label="Block Checkboxes" required :errors="errors">
+    <Field label="Block Checkboxes" required :errors="errors">
       <Checkbox
         v-model="checkboxes"
         native-value="one"
@@ -110,11 +110,11 @@
         :is-disabled="isDisabled"
         >Four</Checkbox
       >
-    </FieldGroup>
+    </Field>
 
     <p>{{ radiobuttons }}</p>
 
-    <FieldGroup label="Inline Radio Buttons" required :errors="errors">
+    <Field label="Inline Radio Buttons" required :errors="errors">
       <RadioButton
         v-model="radiobuttons"
         native-value="one"
@@ -143,9 +143,9 @@
         :is-disabled="isDisabled"
         >Four</RadioButton
       >
-    </FieldGroup>
+    </Field>
 
-    <FieldGroup label="Block RadioButtons" required :errors="errors">
+    <Field label="Block RadioButtons" required :errors="errors">
       <RadioButton
         v-model="radiobuttons"
         native-value="one"
@@ -178,12 +178,12 @@
         :is-disabled="isDisabled"
         >Four</RadioButton
       >
-    </FieldGroup>
+    </Field>
   </div>
 </template>
 
 <script>
-import FieldGroup from "@/components/FieldGroup";
+import Field from "@/components/Field";
 import TextInput from "@/components/Input";
 import TextArea from "@/components/TextArea";
 import Checkbox from "@/components/Checkbox";
@@ -192,7 +192,7 @@ import RadioButton from "@/components/RadioButton";
 export default {
   name: "app",
   components: {
-    FieldGroup,
+    Field,
     TextInput,
     TextArea,
     Checkbox,

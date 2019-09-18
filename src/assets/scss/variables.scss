@@ -31,8 +31,8 @@ $input-border-radius: 0.25rem;
 $input-border-color: $gray-4;
 $input-border-color-focused: lighten($primary-color, 10);
 $input-border-color-invalid: red;
-$input-border-color-select: #eee;
-$input-border-color-select-hover: #ddd;
+$input-border-color-select: $gray-2;
+$input-border-color-select-hover: $gray-3;
 $input-background-color: $gray-1;
 $input-background-color-disabled: $gray-2;
 $input-background-color-focused: $gray-0;
@@ -46,7 +46,8 @@ $input-transition: 0.2s ease-in-out;
 $field-label-color: $gray-color;
 $field-label-font-weight: 600 !default;
 $field-label-font-size: 0.75rem !default;
-$field-label-line-height: 1.33333 !default;;
+$field-label-line-height: 1.33333 !default;
+;
 $field-label-padding: $vertical-spacing-normal 0 $input-padding $input-border-width !default;
 
 $field-errors-margin-top: $input-padding;
@@ -57,6 +58,7 @@ $icon-size-normal: 1.5rem;
 $icon-size-large: 2rem;
 $icon-size-xlarge: 3rem;
 
-html, body {
+html,
+body {
   font-family: $font;
 }

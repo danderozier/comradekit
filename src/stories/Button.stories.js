@@ -1,14 +1,16 @@
 import { storiesOf } from "@storybook/vue";
-import { withKnobs, boolean, text, number } from "@storybook/addon-knobs";
+import { withKnobs, boolean, text } from "@storybook/addon-knobs";
 
 import Button from "@/components/Button.vue";
+import CloseIcon from "@/components/icons/CloseIcon.vue";
 
 storiesOf("Button", module)
   .addDecorator(withKnobs)
   .add("Default", () => {
     return {
       components: {
-        Button
+        Button,
+        CloseIcon
       },
       props: {
         isSelected: {

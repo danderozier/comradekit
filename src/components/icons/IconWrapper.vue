@@ -22,7 +22,7 @@ span.icon {
   width: $icon-size-normal;
   color: currentcolor;
   display: inline-block;
-  fill: rgb(255, 255, 255);
+  fill: currentColor;
   flex-shrink: 0;
   line-height: 1;
 

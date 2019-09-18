@@ -1,14 +1,40 @@
 <template>
-  <div class="text-input-wrapper" v-on="$listeners" :is-focused="isFocused">
+  <div
+    class="text-input-wrapper"
+    v-on="$listeners"
+    :is-focused="isFocused"
+    :is-select="isSelect"
+    :is-loading="isLoading"
+    :is-inline="isInline"
+  >
+    <slot name="icon-before" />
     <slot />
+    <slot name="icon-after">
+      <EditIcon v-if="isInline" />
+    </slot>
   </div>
 </template>
 
 <script>
+import EditIcon from "@/components/icons/CloseIcon";
+
 export default {
   name: "TextInputWrapper",
+  components: { EditIcon },
   props: {
     isFocused: {
+      type: Boolean,
+      default: false
+    },
+    isLoading: {
+      type: Boolean,
+      default: false
+    },
+    isSelect: {
+      type: Boolean,
+      default: false
+    },
+    isInline: {
       type: Boolean,
       default: false
     }
@@ -17,6 +43,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+textarea,
+input,
+.text-renderer {
+  padding: $input-padding;
+}
+
 textarea,
 input {
   background: transparent;
@@ -27,7 +59,7 @@ input {
   font-size: inherit;
   margin: 0;
   outline: none;
-  padding: $input-padding;
+
   letter-spacing: inherit;
   line-height: inherit;
   width: 100%;
@@ -58,15 +90,33 @@ textarea {
   display: flex;
   flex: 1 0 auto;
   font-size: $input-font-size;
-  justify-content: space-between;
+  justify-content: flex-start;
   max-width: 100%;
   overflow: hidden;
+
   position: relative;
   transition: background-color $input-transition, border-color $input-transition;
   word-wrap: break-word;
 
+  .icon {
+    transition: opacity $input-transition;
+  }
+
   &:hover {
     background-color: $input-background-color-hover;
+  }
+
+  &[is-inline]:not([is-focused]):not(:hover) {
+    background-color: transparent;
+    border-color: transparent;
+
+    .icon:last-child {
+      opacity: 0;
+    }
+  }
+
+  &[is-inline]:not([is-focused]):not([disabled]) {
+    cursor: pointer;
   }
 
   &[is-focused] {
@@ -82,7 +132,7 @@ textarea {
   }
 
   &[is-invalid] {
-    &:not([is-disabled]):not([is-loading]) {
+    &:not([disabled]):not([is-loading]) {
       border-color: $input-border-color-invalid;
       animation: shake 0.5s linear;
     }
@@ -96,12 +146,16 @@ textarea {
   }
 
   &[is-select] {
-    &:not([is-loading]) {
+    &:not([is-focused]) {
+      cursor: pointer;
+    }
+
+    &:not([is-focused]):not([is-loading]):not([is-invalid]) {
       background-color: $input-background-color-select;
       border-color: $input-border-color-select;
     }
 
-    &:not([is-focused]):not([disabled]):hover {
+    &:not([is-focused]):not([disabled]):not([is-invalid]):hover {
       background-color: $input-background-color-select-hover;
       border-color: $input-border-color-select-hover;
     }
@@ -119,15 +173,17 @@ textarea {
     background-size: 300%;
     background-position: 0% 0%;
 
-    > textarea,
-    > input {
-      visibility: hidden;
+    ::v-deep {
+      textarea,
+      input {
+        visibility: hidden;
+      }
     }
   }
 
   &[is-compact] {
-    > textarea,
-    > input {
+    ::v-deep > textarea,
+    ::v-deep > input {
       padding: 0;
     }
   }

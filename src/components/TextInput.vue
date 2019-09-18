@@ -1,12 +1,17 @@
 <template>
-  <TextInputWrapper :is-focused="isFocused" :is-disabled="isDisabled">
+  <TextInputWrapper
+    ref="wrapper"
+    :is-disabled="isDisabled"
+    :is-focused="isFocused"
+    :is-invalid="isInvalid"
+    :is-loading="isLoading"
+  >
     <input
-      ref="input"
       type="text"
-      :value="value"
-      :placeholder="placeholder"
+      ref="input"
+      v-model="computedValue"
       :maxlength="maxlength"
-      @input="onInput"
+      :placeholder="placeholder"
       @focus="onFocus"
       @blur="onBlur"
     />
@@ -15,57 +20,28 @@
 
 <script>
 import TextInputWrapper from "@/components/utilities/TextInputWrapper";
+import inputtable from "@mixins/inputtable";
 
 export default {
   name: "TextInput",
+  mixins: [inputtable],
   components: { TextInputWrapper },
   props: {
-    value: {
-      type: [Number, String],
+    maxlength: {
+      type: Number,
       default: undefined
     },
     placeholder: {
       type: String,
       default: undefined
     },
-    maxlength: {
-      type: Number,
-      default: undefined
-    },
-    isDisabled: {
-      type: Boolean,
-      default: false
-    },
-    autoFocus: {
-      type: Boolean,
-      default: false
-    },
     width: {
       type: String,
       default: "100%"
-    }
-  },
-  data() {
-    return {
-      isFocused: false
-    };
-  },
-  mounted() {
-    if (this.autoFocus) {
-      this.$refs.input.focus();
-    }
-  },
-  methods: {
-    onInput(e) {
-      this.$emit("input", e.target.value);
     },
-    onFocus(e) {
-      this.isFocused = true;
-      this.$emit("focus", e);
-    },
-    onBlur(e) {
-      this.isFocused = false;
-      this.$emit("blur", e);
+    value: {
+      type: [Number, String],
+      default: undefined
     }
   }
 };

@@ -2,7 +2,8 @@ import { storiesOf } from "@storybook/vue";
 import { withKnobs, boolean, text, number } from "@storybook/addon-knobs";
 
 import TextArea from "@/components/TextArea.vue";
-import FieldGroup from "@/components/FieldGroup.vue";
+import InlineTextArea from "@/components/InlineTextArea.vue";
+import Field from "@/components/Field.vue";
 
 storiesOf("TextArea", module)
   .addDecorator(withKnobs)
@@ -10,7 +11,8 @@ storiesOf("TextArea", module)
     return {
       components: {
         TextArea,
-        FieldGroup
+        InlineTextArea,
+        Field
       },
       props: {
         isDisabled: {
@@ -36,7 +38,7 @@ storiesOf("TextArea", module)
         }
       },
       template: `
-            <FieldGroup label="Text Input" required>
+            <Field label="Text Input" required>
               <TextArea
                 v-model="text"
                 :is-invalid="isInvalid"
@@ -48,7 +50,8 @@ storiesOf("TextArea", module)
                 :width="width"
                 :auto-focus="autoFocus"
               />
-            </FieldGroup>`,
+              <code>Value: {{ text }}</code>
+            </Field>`,
       data: () => ({
         text: "Sample text",
         autoFocus: true

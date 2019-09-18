@@ -1,18 +1,18 @@
 import { storiesOf } from "@storybook/vue";
 import { withKnobs, boolean } from "@storybook/addon-knobs";
 
-import TextEditableRenderer from "@/components/TextEditableRenderer.vue";
-import FieldGroup from "@/components/FieldGroup.vue";
+import InlineTextInput from "@/components/InlineTextInput.vue";
+import Field from "@/components/Field.vue";
 
 // const config =
 
-storiesOf("TextEditableRenderer", module)
+storiesOf("InlineTextInput", module)
   .addDecorator(withKnobs)
   .add("Default", () => {
     return {
       components: {
-        TextEditableRenderer,
-        FieldGroup
+        InlineTextInput,
+        Field
       },
       props: {
         isDisabled: {
@@ -27,13 +27,13 @@ storiesOf("TextEditableRenderer", module)
       },
       template: `
             <div style="padding: 2rem;">
-              <FieldGroup label="Text Input" required>
-                <TextEditableRenderer
+              <Field label="Text Input" required>
+                <InlineTextInput
                   v-model="text"
                   :is-editable="true"
                   :is-invalid="isInvalid"
                 />
-              </FieldGroup>
+              </Field>
             </div>`,
       data: () => ({
         isSelect: false,

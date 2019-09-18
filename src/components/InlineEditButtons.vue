@@ -1,34 +1,23 @@
 <template>
   <div class="buttons-wrapper">
-    <Button
-      spacing="none"
-      class="box-shadow-wrapper"
-      @click="onConfirm"
-      @focus="onFocus"
-      @blur="onBlur"
-    >
-      <EditorDoneIcon slot="icon-before" size="small" />
+    <Button spacing="compact" @click="onConfirm" @focus="onFocus">
+      <CheckmarkIcon slot="icon-before" size="small" />
     </Button>
-    <Button
-      spacing="none"
-      class="box-shadow-wrapper"
-      @click="onCancel"
-      @focus="onFocus"
-      @blur="onBlur"
-    >
-      <EditorCloseIcon slot="icon-before" size="small" />
+    <Button spacing="compact" @click="onCancel" @focus="onFocus">
+      <CloseIcon slot="icon-before" size="small" />
     </Button>
+    <span tabindex="0" @focus="onBlur"></span>
   </div>
 </template>
 
 <script>
-import EditorDoneIcon from "@/icons/EditorDoneIcon";
-import EditorCloseIcon from "@/icons/EditorCloseIcon";
+import CheckmarkIcon from "@/components/icons/CheckmarkIcon";
+import CloseIcon from "@/components/icons/CloseIcon";
 import Button from "@/components/Button";
 
 export default {
   name: "InlineEditButtons",
-  components: { EditorDoneIcon, Button, EditorCloseIcon },
+  components: { CheckmarkIcon, Button, CloseIcon },
   methods: {
     onConfirm() {
       this.$emit("confirm");
@@ -37,30 +26,19 @@ export default {
       this.$emit("cancel");
     },
     onFocus(event) {
+      console.log("InlineEditButtons onFocus", event);
       this.$emit("focus", event);
     },
-    onBlur(event) {
-      this.$emit("blur", event);
+    onBlur(e) {
+      console.log("InlineEditButtons onBlur", e);
+      this.$emit("blur", e);
     }
   }
 };
 </script>
 
-<style scoped>
-.buttons-wrapper {
-  display: flex;
-}
-
-.box-shadow-wrapper {
-  background-color: rgb(255, 255, 255);
-  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
-    rgba(9, 30, 66, 0.31) 0px 0px 1px;
-  box-sizing: border-box;
-  z-index: 200;
-  border-radius: 3px;
-}
-
-.box-shadow-wrapper:last-child {
-  margin-left: 4px;
+<style lang="scss" scoped>
+button ~ button {
+  margin-left: 0.25rem;
 }
 </style>

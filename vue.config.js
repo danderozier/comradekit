@@ -18,7 +18,9 @@ module.exports = {
         "~": path.resolve(__dirname, "node_modules/"),
         "@assets": path.resolve(__dirname, "src/assets/"),
         "@scss": path.resolve(__dirname, "src/assets/scss/"),
-        "@components": path.resolve(__dirname, "src/components/")
+        "@components": path.resolve(__dirname, "src/components/"),
+        "@utilities": path.resolve(__dirname, "src/utilities/"),
+        "@mixins": path.resolve(__dirname, "src/mixins/")
       }
     }
   },

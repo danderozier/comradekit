@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/vue";
 import { withKnobs, boolean } from "@storybook/addon-knobs";
 
 import Checkbox from "@/components/Checkbox.vue";
-import FieldGroup from "@/components/FieldGroup.vue";
+import Field from "@/components/Field.vue";
 
 // const config =
 
@@ -12,7 +12,7 @@ storiesOf("Checkbox", module)
     return {
       components: {
         Checkbox,
-        FieldGroup
+        Field
       },
       props: {
         isDisabled: {
@@ -26,7 +26,7 @@ storiesOf("Checkbox", module)
         }
       },
       template: `
-            <FieldGroup label="Single Checkbox" required :errors="errors">
+            <Field label="Single Checkbox" required :errors="errors">
               <Checkbox
                 v-model="value"
                 :is-invalid="isInvalid"
@@ -35,7 +35,7 @@ storiesOf("Checkbox", module)
                 >Checkbox</Checkbox
               >
               <pre>{{ value }}</pre>
-            </FieldGroup>`,
+            </Field>`,
       data: () => ({
         value: null
       })
@@ -45,7 +45,7 @@ storiesOf("Checkbox", module)
     return {
       components: {
         Checkbox,
-        FieldGroup
+        Field
       },
       props: {
         isDisabled: {
@@ -56,7 +56,7 @@ storiesOf("Checkbox", module)
         }
       },
       template: `
-            <FieldGroup label="Inline Checkboxes" required :errors="errors">
+            <Field label="Inline Checkboxes" required :errors="errors">
               <Checkbox
                 v-model="value"
                 native-value="one"
@@ -86,7 +86,7 @@ storiesOf("Checkbox", module)
                 >Four</Checkbox
               >
               <pre>{{ value }}</pre>
-            </FieldGroup>`,
+            </Field>`,
       data: () => ({
         value: []
       })
@@ -96,7 +96,7 @@ storiesOf("Checkbox", module)
     return {
       components: {
         Checkbox,
-        FieldGroup
+        Field
       },
       props: {
         isDisabled: {
@@ -107,7 +107,7 @@ storiesOf("Checkbox", module)
         }
       },
       template: `
-            <FieldGroup label="Inline Checkboxes" required :errors="errors">
+            <Field label="Inline Checkboxes" required :errors="errors">
               <Checkbox
                 v-model="value"
                 native-value="one"
@@ -141,7 +141,7 @@ storiesOf("Checkbox", module)
                 >Four</Checkbox
               >
               <pre>{{ value }}</pre>
-            </FieldGroup>`,
+            </Field>`,
       data: () => ({
         value: []
       })

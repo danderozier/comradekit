@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  name: "FieldGroup",
+  name: "Field",
   props: {
     errors: {
       type: Array,

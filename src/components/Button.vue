@@ -220,6 +220,15 @@ button[appearance="is-link"] {
   }
 }
 
+button[appearance="is-text"] {
+  background: none;
+  color: inherit;
+
+  &:not([disabled]):not([selected]):hover {
+    color: inherit;
+  }
+}
+
 button[appearance="is-warning"] {
   background: #ffab00;
   color: #172b4d;
@@ -315,6 +324,6 @@ button::-moz-focus-inner {
 }
 
 button ~ button {
-  margin-left: 10px;
+  margin-left: 0.5rem;
 }
 </style>

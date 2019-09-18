@@ -39,7 +39,6 @@ export default {
   },
   methods: {
     initPopper() {
-      console.log("what");
       const [defaultSlot] = this.$slots.default;
       this.popper = new Popper(this.targetElement, defaultSlot.elm, {
         placement: this.placement,

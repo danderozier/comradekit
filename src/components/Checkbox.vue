@@ -2,8 +2,8 @@
   <label
     ref="checkbox"
     class="checkbox"
-    :for="id"
     tabindex="-1"
+    :for="id"
     :is-disabled="isDisabled"
     :style="{ display: isBlock ? 'block' : 'inline-block' }"
   >
@@ -28,10 +28,12 @@
 <script>
 import CheckboxIcon from "@/components/icons/CheckboxIcon";
 import CheckboxIndeterminateIcon from "@/components/icons/CheckboxIndeterminateIcon";
-import _ from "lodash";
+import inputtable from "@/mixins/inputtable";
+import checkboxInput from "@/mixins/checkboxInput";
 
 export default {
   name: "Checkbox",
+  mixins: [inputtable, checkboxInput],
   components: { CheckboxIcon, CheckboxIndeterminateIcon },
   props: {
     indeterminate: {
@@ -40,75 +42,6 @@ export default {
     isBlock: {
       type: Boolean,
       default: false
-    },
-    isDisabled: {
-      type: Boolean,
-      default: false
-    },
-    isFocused: {
-      type: Boolean,
-      default: false
-    },
-    isInvalid: {
-      type: Boolean,
-      default: false
-    },
-    nativeValue: {
-      type: null
-    },
-    value: {
-      type: [Boolean, Array],
-      default: null
-    }
-  },
-  data() {
-    return { id: undefined };
-  },
-  computed: {
-    computedValue: {
-      get() {
-        if (Array.isArray(this.value)) {
-          return _.find(this.value, o => o === this.nativeValue);
-        } else {
-          return this.value;
-        }
-      },
-      set(value) {
-        if (Array.isArray(this.value)) {
-          if (value) {
-            value = [...this.value, this.nativeValue];
-          } else {
-            value = this.value.filter(o => o !== this.nativeValue);
-          }
-        }
-        this.$emit("input", value);
-      }
-    }
-  },
-  watch: {
-    isFocused: {
-      handler(isFocused) {
-        if (isFocused) {
-          this.$nextTick(() => this.$refs.input.focus());
-        }
-      },
-      immediate: true
-    }
-  },
-  created() {
-    this.id = this._uid;
-  },
-  methods: {
-    onBlur(e) {
-      if (!this.$refs.checkbox.contains(e.relatedTarget)) {
-        this.$emit("blur", e);
-      }
-    },
-    onChange(e) {
-      this.$emit("change", e);
-    },
-    onFocus(e) {
-      this.$emit("focus", e);
     }
   }
 };

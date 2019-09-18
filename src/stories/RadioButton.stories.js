@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/vue";
 import { withKnobs, boolean } from "@storybook/addon-knobs";
 
 import RadioButton from "@/components/RadioButton.vue";
-import FieldGroup from "@/components/FieldGroup.vue";
+import Field from "@/components/Field.vue";
 
 // const config =
 
@@ -12,7 +12,7 @@ storiesOf("RadioButton", module)
     return {
       components: {
         RadioButton,
-        FieldGroup
+        Field
       },
       props: {
         isDisabled: {
@@ -23,7 +23,7 @@ storiesOf("RadioButton", module)
         }
       },
       template: `
-            <FieldGroup label="Single Radio Button" required :errors="errors">
+            <Field label="Single Radio Button" required :errors="errors">
               <RadioButton
                 v-model="value"
                 :is-invalid="isInvalid"
@@ -32,7 +32,7 @@ storiesOf("RadioButton", module)
                 >Radio Button</RadioButton
               >
               <pre>{{ value }}</pre>
-            </FieldGroup>`,
+            </Field>`,
       data: () => ({
         value: null
       })
@@ -42,7 +42,7 @@ storiesOf("RadioButton", module)
     return {
       components: {
         RadioButton,
-        FieldGroup
+        Field
       },
       props: {
         isDisabled: {
@@ -53,7 +53,7 @@ storiesOf("RadioButton", module)
         }
       },
       template: `
-            <FieldGroup label="Inline Radio Buttons" required :errors="errors">
+            <Field label="Inline Radio Buttons" required :errors="errors">
               <RadioButton
                 v-model="value"
                 native-value="one"
@@ -83,7 +83,7 @@ storiesOf("RadioButton", module)
                 >Four</RadioButton
               >
               <pre>{{ value }}</pre>
-            </FieldGroup>`,
+            </Field>`,
       data: () => ({
         value: null
       })
@@ -93,7 +93,7 @@ storiesOf("RadioButton", module)
     return {
       components: {
         RadioButton,
-        FieldGroup
+        Field
       },
       props: {
         isDisabled: {
@@ -104,7 +104,7 @@ storiesOf("RadioButton", module)
         }
       },
       template: `
-            <FieldGroup label="Block Radio Buttons" required :errors="errors">
+            <Field label="Block Radio Buttons" required :errors="errors">
               <RadioButton
                 v-model="value"
                 native-value="one"
@@ -138,7 +138,7 @@ storiesOf("RadioButton", module)
                 >Four</RadioButton
               >
               <pre>{{ value }}</pre>
-            </FieldGroup>`,
+            </Field>`,
       data: () => ({
         value: null
       })

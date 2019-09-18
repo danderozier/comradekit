@@ -7,9 +7,9 @@
     :style="{ width }"
   >
     <textarea
-      ref="textarea"
-      v-model="computedValue"
+      ref="input"
       v-bind="$attrs"
+      v-model="computedValue"
       :auto="height === 'auto'"
       :disabled="isDisabled"
       :rows="rows"
@@ -17,39 +17,19 @@
       v-on="listeners"
       @keydown="resize"
       @input="resize"
-      @focus="onFocus"
-      @blur="onBlur"
     />
   </TextInputWrapper>
 </template>
 
 <script>
 import TextInputWrapper from "@/components/utilities/TextInputWrapper";
+import inputtable from "@mixins/inputtable";
 
 export default {
   name: "TextArea",
+  mixins: [inputtable],
   components: { TextInputWrapper },
   props: {
-    value: {
-      type: String,
-      required: true
-    },
-    autoFocus: {
-      type: Boolean,
-      default: false
-    },
-    isInvalid: {
-      type: Boolean,
-      default: false
-    },
-    isLoading: {
-      type: Boolean,
-      default: false
-    },
-    isDisabled: {
-      type: Boolean,
-      default: false
-    },
     height: {
       type: [Number, String],
       default: "auto"
@@ -58,33 +38,25 @@ export default {
       type: [Number, String],
       default: "auto"
     },
-    width: {
-      type: [Number, String],
-      default: "100%"
-    },
     rows: {
       type: [Number, String],
       default: "3"
+    },
+    value: {
+      type: String,
+      required: true
+    },
+    width: {
+      type: [Number, String],
+      default: "100%"
     }
   },
   data() {
     return {
-      currentHeight: this.height,
-      isFocused: false
+      currentHeight: this.height
     };
   },
   computed: {
-    /**
-     * Computed value
-     */
-    computedValue: {
-      get() {
-        return this.value;
-      },
-      set(value) {
-        this.$emit("input", value);
-      }
-    },
     /**
      * Strip out 'input' listener.
      */
@@ -95,32 +67,20 @@ export default {
     }
   },
   mounted() {
-    if (this.autoFocus) {
-      this.$refs.textarea.focus();
-    }
-
     if (this.height === "auto") {
       this.setCurrentHeight();
     }
   },
   methods: {
     setCurrentHeight() {
-      this.currentHeight = `${this.$refs.textarea.scrollHeight}px`;
-    },
-    onFocus(e) {
-      this.isFocused = true;
-      this.$emit("focus", e);
-    },
-    onBlur(e) {
-      this.isFocused = false;
-      this.$emit("blur", e);
+      this.currentHeight = `${this.$refs.input.scrollHeight}px`;
     },
     resize() {
       if (this.height !== "auto") return;
 
       this.currentHeight = "auto";
       this.$nextTick(() => {
-        if (this.$refs.textarea) {
+        if (this.$refs.input) {
           this.setCurrentHeight();
         }
       });
