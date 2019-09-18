@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import TextInputWrapper from "@/components/utilities/TextInputWrapper";
+import TextInputWrapper from "@components/Form/_TextInputWrapper";
 import inputtable from "@mixins/inputtable";
 
 export default {

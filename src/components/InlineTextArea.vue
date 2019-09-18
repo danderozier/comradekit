@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import TextArea from "@components/TextArea";
+import TextArea from "@components/Form/TextArea/TextArea";
 import confirmable from "@mixins/confirmable";
 
 export default {

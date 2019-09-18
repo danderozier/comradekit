@@ -1,23 +1,22 @@
 <template>
   <div class="buttons-wrapper">
     <Button spacing="compact" @click="onConfirm" @focus="onFocus">
-      <CheckmarkIcon slot="icon-before" size="small" />
+      <Icon icon="checkmark" slot="icon-before" size="small" />
     </Button>
     <Button spacing="compact" @click="onCancel" @focus="onFocus">
-      <CloseIcon slot="icon-before" size="small" />
+      <Icon icon="close" slot="icon-before" size="small" />
     </Button>
     <span tabindex="0" @focus="onBlur"></span>
   </div>
 </template>
 
 <script>
-import CheckmarkIcon from "@/components/icons/CheckmarkIcon";
-import CloseIcon from "@/components/icons/CloseIcon";
+import Icon from "@components/Icon/Icon";
 import Button from "@/components/Button/Button";
 
 export default {
   name: "InlineEditButtons",
-  components: { CheckmarkIcon, Button, CloseIcon },
+  components: { Button, Icon },
   methods: {
     onConfirm() {
       this.$emit("confirm");

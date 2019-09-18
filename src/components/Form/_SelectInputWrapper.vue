@@ -2,16 +2,16 @@
   <TextInputWrapper v-on="$listeners" v-bind="$attrs" :is-select="true">
     <slot name="icon-before" />
     <slot />
-    <ChevronDownIcon slot="icon-after" />
+    <icon icon="chevron-down" slot="icon-after" />
   </TextInputWrapper>
 </template>
 
 <script>
-import ChevronDownIcon from "@/components/icons/ChevronDownIcon";
-import TextInputWrapper from "@/components/utilities/TextInputWrapper";
+import Icon from "@components/Icon/Icon";
+import TextInputWrapper from "@components/Form/_TextInputWrapper";
 
 export default {
   name: "SelectInputWrapper",
-  components: { ChevronDownIcon, TextInputWrapper }
+  components: { Icon, TextInputWrapper }
 };
 </script>

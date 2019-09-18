@@ -1,16 +1,22 @@
 <template>
   <div class="tag" :appearance="type" :is-closable="closable">
     <span>{{ label }}</span>
-    <CloseIcon slot="icon-before" size="is-xsmall" @click="$emit('close')" v-if="closable" />
+    <Icon
+      icon="close"
+      slot="icon-before"
+      size="is-xsmall"
+      @click="$emit('close')"
+      v-if="closable"
+    />
   </div>
 </template>
 
 <script>
-import CloseIcon from "@/components/icons/CloseIcon";
+import Icon from "@components/Icon/Icon";
 
 export default {
   name: "Tag",
-  components: { CloseIcon },
+  components: { Icon },
   props: {
     label: {
       type: String,

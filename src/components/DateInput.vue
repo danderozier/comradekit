@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import TextInputWrapper from "@/components/utilities/TextInputWrapper";
+import TextInputWrapper from "@components/Form/_TextInputWrapper";
 
 export default {
   name: "DateInput",

@@ -58,12 +58,11 @@
 
 <script>
 import ButtonGroup from '@components/Button/ButtonGroup';
-import CloseIcon from '@components/icons/CloseIcon';
 import Checkbox from '@components/Form/Checkbox/Checkbox';
 import Field from '@components/Form/Field/Field';
 
 export default {
-  components: { ButtonGroup, CloseIcon, Checkbox, Field },
+  components: { ButtonGroup, Checkbox, Field },
   data() {
     return {
       label: 'Label',
@@ -89,20 +88,20 @@ export default {
   <div>
     <div>
       <Button>
-        <Icon icon="close-outline" slot="icon-before"/>
+        <Icon icon="close" slot="icon-before"/>
         {{ label }}
       </Button>
       <Button>
-        <Icon icon="close-outline" slot="icon-after"/>
+        <Icon icon="close" slot="icon-after"/>
         {{ label }}
       </Button>
       <Button>
-        <Icon icon="close-outline" slot="icon-before"/>
+        <Icon icon="close" slot="icon-before"/>
         {{ label }}
-        <Icon icon="close-outline" slot="icon-after"/>
+        <Icon icon="close" slot="icon-after"/>
       </Button>
       <Button>
-        <Icon icon="close-outline" slot="icon-before"/>
+        <Icon icon="close" slot="icon-before"/>
       </Button>
     </div>
   </div>

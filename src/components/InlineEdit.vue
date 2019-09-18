@@ -35,8 +35,8 @@
 </template>
 
 <script>
-import Popper from "@/components/Popper";
-// import TextInputWrapper from "@/components/utilities/TextInputWrapper";
+import Popper from "@components/Popper/Popper";
+// import TextInputWrapper from "@components/Form/_TextInputWrapper";
 import InlineEditButtons from "@/components/InlineEditButtons";
 import InlineEditToggle from "@/components/InlineEditToggle";
 

@@ -10,17 +10,17 @@
     <slot name="icon-before" />
     <slot />
     <slot name="icon-after">
-      <EditIcon v-if="isInline" />
+      <Icon icon="close" v-if="isInline" />
     </slot>
   </div>
 </template>
 
 <script>
-import EditIcon from "@/components/icons/CloseIcon";
+import Icon from "@components/Icon/Icon";
 
 export default {
   name: "TextInputWrapper",
-  components: { EditIcon },
+  components: { Icon },
   props: {
     isFocused: {
       type: Boolean,

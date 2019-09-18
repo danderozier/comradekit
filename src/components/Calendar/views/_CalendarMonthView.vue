@@ -31,9 +31,9 @@
 
 <script>
 import Button from "@components/Button/Button";
-import CalendarHeader from "@components/calendar/CalendarHeader";
-import CalendarDayHeader from "@components/calendar/CalendarDayHeader";
-import CalendarWeek from "@components/calendar/CalendarWeek";
+import CalendarHeader from "@components/Calendar/_CalendarHeader";
+import CalendarDayHeader from "@components/Calendar/_CalendarDayHeader";
+import CalendarWeek from "@components/Calendar/_CalendarWeek";
 import CalendarDates from "calendar-dates";
 import moment from "moment";
 

@@ -1,5 +1,5 @@
 import InlineEditButtons from "@/components/InlineEditButtons";
-import Popper from "@/components/Popper";
+import Popper from "@components/Popper/Popper";
 
 export default {
   components: {
@@ -14,6 +14,7 @@ export default {
   },
   computed: {
     listeners() {
+      // eslint-disable-next-line
       const { input, ...listeners } = this.$listeners;
       return listeners;
     },

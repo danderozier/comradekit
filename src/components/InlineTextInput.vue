@@ -29,9 +29,9 @@
 </template>
 
 <script>
-import TextInputWrapper from "@/components/utilities/TextInputWrapper";
+import TextInputWrapper from "@components/Form/_TextInputWrapper";
 import InlineEditButtons from "@/components/InlineEditButtons";
-import Popper from "@/components/Popper";
+import Popper from "@components/Popper/Popper";
 
 export default {
   name: "InlineInput",
@@ -79,10 +79,10 @@ export default {
     }
   },
   methods: {
-    onConfirm(e) {
+    onConfirm() {
       this.$emit("input", this.changedValue);
     },
-    onCancel(e) {
+    onCancel() {
       this.changedValue = this.value;
     },
     onFocus(e) {

@@ -23,7 +23,7 @@
 
 <script>
 import Button from "@components/Button/Button";
-import CalendarHeader from "@components/calendar/CalendarHeader";
+import CalendarHeader from "@components/Calendar/_CalendarHeader";
 import moment from "moment";
 import _ from "lodash";
 

@@ -185,7 +185,7 @@
 <script>
 import Field from "@/components/Form/Field/Field";
 import TextInput from "@/components/Input";
-import TextArea from "@/components/TextArea";
+import TextArea from "@components/Form/Textarea/Textarea";
 import Checkbox from "@/components/Form/Checkbox/Checkbox";
 import RadioButton from "@/components/RadioButton";
 

@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import MonthView from "@components/calendar/views/CalendarMonthView";
-import YearView from "@components/calendar/views/CalendarYearView";
-import DecadeView from "@components/calendar/views/CalendarDecadeView";
+import MonthView from "@components/Calendar/views/_CalendarMonthView";
+import YearView from "@components/Calendar/views/_CalendarYearView";
+import DecadeView from "@components/Calendar/views/_CalendarDecadeView";
 import moment from "moment";
 
 export default {

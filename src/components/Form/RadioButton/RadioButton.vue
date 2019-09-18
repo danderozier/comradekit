@@ -19,17 +19,17 @@
       @blur="onBlur"
       @change="onChange"
     />
-    <RadioButtonIcon size="is-xsmall" />
+    <Icon icon="radio-button" size="is-xsmall" />
     <span v-if="$slots['default']" class="label"><slot /></span>
   </label>
 </template>
 
 <script>
-import RadioButtonIcon from "@/components/icons/RadioButtonIcon";
+import Icon from "@components/Icon/Icon";
 
 export default {
   name: "RadioButton",
-  components: { RadioButtonIcon },
+  components: { Icon },
   props: {
     isBlock: {
       type: Boolean,

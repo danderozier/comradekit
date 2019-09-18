@@ -11,12 +11,12 @@
 </template>
 
 <script>
-import InlineEditButtons from "@/components/InlineEditButtons";
-import Popper from "@/components/Popper";
+// import InlineEditButtons from "@/components/InlineEditButtons";
+// import Popper from "@components/Popper/Popper";
 
 export default {
   name: "ConfirmableInput",
-
+  // components: { InlineEditButtons, Popper },
   props: {
     value: {
       type: [Number, String],

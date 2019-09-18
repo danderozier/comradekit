@@ -25,11 +25,10 @@
 </template>
 
 <script>
-import Calendar from "@/components/Calendar";
-import Dropdown from "@/components/Dropdown";
-// import DropdownItem from "@/components/DropdownItem";
-import SelectInputWrapper from "@/components/utilities/SelectInputWrapper";
-import TextRenderer from "@/components/TextRenderer";
+import Calendar from "@components/Calendar/Calendar";
+import Dropdown from "@components/Dropdown/Dropdown";
+import SelectInputWrapper from "@components/Form/_SelectInputWrapper";
+import TextRenderer from "@/components/Form/_TextRenderer";
 import _ from "lodash";
 import inputtable from "@mixins/inputtable";
 

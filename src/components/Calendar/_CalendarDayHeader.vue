@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import CalendarMonthCell from "@components/calendar/CalendarMonthCell";
+import CalendarMonthCell from "@components/Calendar/_CalendarMonthCell";
 
 export default {
   name: "CalendarDayHeader",

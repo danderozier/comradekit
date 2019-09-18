@@ -1,9 +1,9 @@
 ```jsx
 <div style="display: flex; align-items: center">
-<Icon icon="close-outline" size="is-xlarge"/>
-<Icon icon="close-outline" size="is-large"/>
-<Icon icon="close-outline" />
-<Icon icon="close-outline" size="is-small" />
-<Icon icon="close-outline" size="is-xsmall" />
+<Icon icon="close" size="is-xlarge"/>
+<Icon icon="close" size="is-large"/>
+<Icon icon="close" />
+<Icon icon="close" size="is-small" />
+<Icon icon="close" size="is-xsmall" />
 </div>
 ```
