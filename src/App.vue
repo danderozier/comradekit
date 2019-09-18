@@ -183,10 +183,10 @@
 </template>
 
 <script>
-import Field from "@/components/Field";
+import Field from "@/components/Form/Field/Field";
 import TextInput from "@/components/Input";
 import TextArea from "@/components/TextArea";
-import Checkbox from "@/components/Checkbox";
+import Checkbox from "@/components/Form/Checkbox/Checkbox";
 import RadioButton from "@/components/RadioButton";
 
 export default {

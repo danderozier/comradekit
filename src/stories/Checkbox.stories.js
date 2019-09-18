@@ -1,8 +1,8 @@
 import { storiesOf } from "@storybook/vue";
 import { withKnobs, boolean } from "@storybook/addon-knobs";
 
-import Checkbox from "@/components/Checkbox.vue";
-import Field from "@/components/Field.vue";
+import Checkbox from "@/components/Form/Checkbox/Checkbox.vue";
+import Field from "@/components/Form/Field/Field.vue";
 
 // const config =
 

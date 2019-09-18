@@ -1,25 +1,31 @@
-/**
- *
- * Input components must provide:
- * - a `value` prop
- *
- */
-
 export default {
   props: {
+    /**
+     * If true, component will automatically gain focus
+     * when mounted.
+     */
     autoFocus: {
       type: Boolean,
       default: false
     },
+    /**
+     * Toggle the component's `disabled` state.
+     */
+    isDisabled: {
+      type: Boolean,
+      default: false
+    },
+    /**
+     * Toggle the component's `invalid` state.
+     */
     isInvalid: {
       type: Boolean,
       default: false
     },
+    /**
+     * Toggle the component's `loading` state.
+     */
     isLoading: {
-      type: Boolean,
-      default: false
-    },
-    isDisabled: {
       type: Boolean,
       default: false
     }

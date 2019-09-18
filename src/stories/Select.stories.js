@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/vue";
 import { withKnobs } from "@storybook/addon-knobs";
 
 import Select from "@/components/Select";
-import Field from "@/components/Field";
+import Field from "@/components/Form/Field/Field";
 
 storiesOf("Select", module)
   .addDecorator(withKnobs)

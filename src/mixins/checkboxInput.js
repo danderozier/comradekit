@@ -1,12 +1,19 @@
-import _ from "lodash";
+// import _ from "lodash";
 
 export default {
   props: {
+    /**
+     * Same as native `value`
+     */
     nativeValue: {
       type: null
     },
+    /**
+     * Binding value
+     * @model
+     */
     value: {
-      type: [Boolean, Array],
+      type: [Boolean, String, Number, Object, Array],
       default: null
     }
   },
@@ -16,23 +23,25 @@ export default {
     };
   },
   computed: {
+    hasParentField() {
+      return this.$parent.$options._componentTag === "Field";
+    },
     computedValue: {
       get() {
-        if (Array.isArray(this.value)) {
-          return _.find(this.value, o => o === this.nativeValue);
-        } else {
-          return this.value;
-        }
+        return this.value;
       },
       set(value) {
-        if (Array.isArray(this.value)) {
-          if (value) {
-            value = [...this.value, this.nativeValue];
-          } else {
-            value = this.value.filter(o => o !== this.nativeValue);
+        if (value) {
+          this.$emit("input", this.nativeValue ? this.nativeValue : true);
+          if (this.hasParentField) {
+            this.$parent.$emit("input-add", this.nativeValue);
+          }
+        } else {
+          this.$emit("input", this.nativeValue ? null : false);
+          if (this.hasParentField) {
+            this.$parent.$emit("input-remove", this.nativeValue);
           }
         }
-        this.$emit("input", value);
       }
     }
   },

@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import Button from "@components/Button";
+import Button from "@components/Button/Button";
 import CalendarHeader from "@components/calendar/CalendarHeader";
 import moment from "moment";
 import _ from "lodash";

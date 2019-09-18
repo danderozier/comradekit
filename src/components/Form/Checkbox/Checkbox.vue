@@ -5,7 +5,6 @@
     tabindex="-1"
     :for="id"
     :is-disabled="isDisabled"
-    :style="{ display: isBlock ? 'block' : 'inline-block' }"
   >
     <input
       type="checkbox"
@@ -19,29 +18,29 @@
       @blur="onBlur"
       @change="onChange"
     />
-    <CheckboxIndeterminateIcon size="is-xsmall" v-if="indeterminate" />
-    <CheckboxIcon size="is-xsmall" v-else />
+    <Icon :icon="iconType" size="is-xsmall" />
     <span v-if="$slots['default']" class="label"><slot /></span>
   </label>
 </template>
 
 <script>
-import CheckboxIcon from "@/components/icons/CheckboxIcon";
-import CheckboxIndeterminateIcon from "@/components/icons/CheckboxIndeterminateIcon";
 import inputtable from "@/mixins/inputtable";
 import checkboxInput from "@/mixins/checkboxInput";
 
 export default {
   name: "Checkbox",
   mixins: [inputtable, checkboxInput],
-  components: { CheckboxIcon, CheckboxIndeterminateIcon },
   props: {
+    /**
+     * Toggle the component's `indeterminate` state.
+     */
     indeterminate: {
       type: Boolean
-    },
-    isBlock: {
-      type: Boolean,
-      default: false
+    }
+  },
+  computed: {
+    iconType() {
+      return this.indeterminate ? "checkbox-indeterminate" : "checkbox";
     }
   }
 };
@@ -49,14 +48,14 @@ export default {
 
 <style lang="scss" scoped>
 .checkbox {
-  display: inline-flex;
+  display: flex;
   position: relative;
   cursor: pointer;
   outline: none;
 
-  + .checkbox {
-    margin-top: $input-padding;
-  }
+  // + .checkbox {
+  //   margin-top: $input-padding;
+  // }
 
   .label {
     font-size: $input-font-size;

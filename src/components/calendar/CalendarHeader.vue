@@ -2,18 +2,18 @@
   <div class="calendar__header">
     <Button type="is-text" @click="$emit('prev')">
       Prev
-      <span slot="icon-before"><</span>
+      <span slot="icon-before"></span>
     </Button>
     <slot />
     <Button type="is-text" @click="$emit('next')">
       Next
-      <span slot="icon-after">></span>
+      <span slot="icon-after"></span>
     </Button>
   </div>
 </template>
 
 <script>
-import Button from "@components/Button";
+import Button from "@components/Button/Button";
 
 export default {
   name: "CalendarHeader",

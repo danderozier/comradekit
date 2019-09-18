@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/vue";
 import { withKnobs } from "@storybook/addon-knobs";
 
 import Datepicker from "@/components/Datepicker";
-import Field from "@/components/Field";
+import Field from "@/components/Form/Field/Field";
 
 storiesOf("Datepicker", module)
   .addDecorator(withKnobs)

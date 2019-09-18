@@ -6,7 +6,7 @@
 
 <script>
 import IconWrapper from "@/components/icons/IconWrapper";
-import CheckboxIndeterminate from "@/assets/svg/checkbox_indeterminate.svg";
+import CheckboxIndeterminate from "@/assets/svg/checkbox-indeterminate.svg";
 
 export default {
   name: "CheckboxIndeterminateIcon",

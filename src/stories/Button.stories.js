@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/vue";
 import { withKnobs, boolean, text } from "@storybook/addon-knobs";
 
-import Button from "@/components/Button.vue";
+import Button from "@/components/Button/Button.vue";
 import CloseIcon from "@/components/icons/CloseIcon.vue";
 
 storiesOf("Button", module)

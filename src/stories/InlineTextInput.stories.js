@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/vue";
 import { withKnobs, boolean } from "@storybook/addon-knobs";
 
 import InlineTextInput from "@/components/InlineTextInput.vue";
-import Field from "@/components/Field.vue";
+import Field from "@/components/Form/Field/Field.vue";
 
 // const config =
 

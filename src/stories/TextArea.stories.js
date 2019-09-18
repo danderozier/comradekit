@@ -3,7 +3,7 @@ import { withKnobs, boolean, text, number } from "@storybook/addon-knobs";
 
 import TextArea from "@/components/TextArea.vue";
 import InlineTextArea from "@/components/InlineTextArea.vue";
-import Field from "@/components/Field.vue";
+import Field from "@/components/Form/Field/Field.vue";
 
 storiesOf("TextArea", module)
   .addDecorator(withKnobs)

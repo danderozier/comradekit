@@ -5,7 +5,7 @@ import TextInput from "@/components/TextInput.vue";
 import TextInputWrapper from "@/components/utilities/TextInputWrapper.vue";
 import TextRenderer from "@/components/TextRenderer.vue";
 import InlineTextInput from "@/components/InlineTextInput.vue";
-import Field from "@/components/Field.vue";
+import Field from "@/components/Form/Field/Field.vue";
 import CloseIcon from "@/components/icons/CloseIcon.vue";
 
 // const config =

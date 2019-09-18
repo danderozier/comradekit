@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/vue";
 import { withKnobs, boolean } from "@storybook/addon-knobs";
 
 import RadioButton from "@/components/RadioButton.vue";
-import Field from "@/components/Field.vue";
+import Field from "@/components/Form/Field/Field.vue";
 
 // const config =
 

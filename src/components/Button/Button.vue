@@ -7,13 +7,16 @@
     :selected="isSelected"
     :loading="isLoading"
     :spacing="spacing"
-    v-on="listeners"
+    v-on="computedListeners"
   >
-    <span class="wrapper" tabindex="-1" :icon-is-only-child="iconIsOnlyChild">
+    <span class="wrapper" tabindex="-1" :class="computedClasses">
+      <!-- @slot Include an icon before button content -->
       <slot v-if="!isLoading" name="icon-before" />
       <span v-if="this.$slots.default" ref="label" class="label">
+        <!-- @slot Button content -->
         <slot />
       </span>
+      <!-- @slot Include an icon after button content -->
       <slot v-if="!isLoading" name="icon-after" />
       <!-- <Spinner
         v-if="isLoading"
@@ -32,28 +35,56 @@ export default {
     // Spinner
   },
   props: {
-    isSelected: { type: Boolean, default: false },
-    isDisabled: { type: Boolean, default: false },
-    type: { type: String, default: "default" },
+    /**
+     * If true, component will automatically gain focus
+     * when mounted.
+     */
     autoFocus: { type: Boolean, default: false },
+    /**
+     * Toggle the component's `disabled` state.
+     */
+    isDisabled: { type: Boolean, default: false },
+    /**
+     * Toggle the component's `loading` state.
+     */
     isLoading: { type: Boolean, default: false },
-    spacing: { type: String, default: "default" }
+    /**
+     * Toggle the component's `selected` state.
+     */
+    isSelected: { type: Boolean, default: false },
+    /**
+     * Set the button's spacing.
+     * `default, compact, none`
+     */
+    spacing: { type: String, default: "default" },
+    /**
+     * Set the button's appearance.
+     * `default, is-primary, is-link, is-text, is-warning, is-danger`
+     */
+    type: { type: String, default: "default" }
   },
   computed: {
-    iconIsOnlyChild() {
-      return (
-        !!(
-          this.$slots["icon-after"] &&
-          !this.$slots["icon-before"] &&
-          !this.$slots.default
-        ) ||
-        (!this.$slots["icon-after"] &&
-          this.$slots["icon-before"] &&
-          !this.$slots.default)
-      );
+    computedClasses() {
+      return {
+        "has-icon-before": this.hasIconBefore,
+        "has-icon-after": this.hasIconAfter,
+        "has-icon-only": this.hasIconOnly
+      };
     },
-    listeners() {
+    computedListeners() {
       return this.$listeners;
+    },
+    hasIconBefore() {
+      return this.$slots.default && this.$slots["icon-before"];
+    },
+    hasIconAfter() {
+      return this.$slots.default && this.$slots["icon-after"];
+    },
+    hasIconOnly() {
+      return (
+        !this.$slots.default &&
+        (this.$slots["icon-before"] || this.$slots["icon-after"])
+      );
     }
   },
   mounted() {
@@ -118,9 +149,21 @@ span.wrapper {
   height: 100%;
   justify-content: center;
   padding: 0 8px;
+
+  &.has-icon-before {
+    padding-left: 4px;
+  }
+
+  &.has-icon-after {
+    padding-right: 4px;
+  }
+
+  &.has-icon-only {
+    padding: 0 4px;
+  }
 }
 
-[spacing="compact"] span.wrapper[icon-is-only-child] {
+span.wrapper[icon-is-only-child] {
   padding: 0 4px;
 }
 

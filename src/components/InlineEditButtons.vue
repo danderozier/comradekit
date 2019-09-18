@@ -13,7 +13,7 @@
 <script>
 import CheckmarkIcon from "@/components/icons/CheckmarkIcon";
 import CloseIcon from "@/components/icons/CloseIcon";
-import Button from "@/components/Button";
+import Button from "@/components/Button/Button";
 
 export default {
   name: "InlineEditButtons",
