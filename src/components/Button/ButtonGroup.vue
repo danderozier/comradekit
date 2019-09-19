@@ -1,5 +1,5 @@
 <template>
-  <div class="button-group">
+  <div class="button-group" :spacing="spacing">
     <!-- @slot Buttons go here -->
     <slot />
   </div>
@@ -7,7 +7,13 @@
 
 <script>
 export default {
-  name: "ButtonGroup"
+  name: "ButtonGroup",
+  props: {
+    spacing: {
+      type: String,
+      default: "default"
+    }
+  }
 };
 </script>
 
@@ -24,6 +30,40 @@ export default {
 
     &:not(:last-child) {
       margin-right: 0.25rem;
+    }
+  }
+
+  &[spacing="compact"] > * {
+    &:not(:first-child) {
+      margin-left: 0.125rem;
+    }
+
+    &:not(:last-child) {
+      margin-right: 0.125rem;
+    }
+  }
+
+  &[spacing="none"] > * {
+    &:first-child {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &:last-child {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    &:not(:first-child) {
+      margin-left: 0.5px;
+    }
+
+    &:not(:last-child) {
+      margin-right: 0.5px;
+    }
+
+    &:not(:first-child):not(:last-child) {
+      border-radius: 0;
     }
   }
 }

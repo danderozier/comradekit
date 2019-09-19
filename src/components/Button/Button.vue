@@ -137,7 +137,7 @@ button[spacing="none"] {
   line-height: inherit;
 }
 
-[spacing="none"] span.wrapper {
+button[spacing="none"] span.wrapper {
   padding: 0;
 }
 

@@ -43,12 +43,14 @@ $input-text-color: #333;
 $input-muted-text-color: #777;
 $input-transition: 0.2s ease-in-out;
 
+$field-margin: 1rem;
 $field-label-color: $gray-color;
 $field-label-font-weight: 600 !default;
 $field-label-font-size: 0.75rem !default;
 $field-label-line-height: 1.33333 !default;
-;
-$field-label-padding: $vertical-spacing-normal 0 $input-padding $input-border-width !default;
+
+$field-label-padding-top: $vertical-spacing-normal;
+$field-label-padding-bottom: $input-padding;
 
 $field-errors-margin-top: $input-padding;
 

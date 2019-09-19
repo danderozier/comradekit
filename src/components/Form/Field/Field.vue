@@ -1,13 +1,34 @@
 <template>
   <div class="field" :is-required="required">
-    <span class="field__label">{{ label }}</span>
-    <slot />
-    <div class="field-errors">
+    <div class="field__header">
+      <label
+        class="field__label"
+        v-if="label || $slots['label']"
+        :id="ariaLabelledby"
+      >
+        <!-- @slot Optional slot for complex labels. -->
+        <slot name="label">{{ label }}</slot>
+      </label>
+
+      <span
+        class="field__description"
+        v-if="description || $slots['description']"
+        :id="ariaDescribedby"
+      >
+        <!-- @slot Optional slot for complex descriptions, e.g. links -->
+        <slot name="description">{{ description }}</slot>
+      </span>
+    </div>
+
+    <div class="field__content">
+      <slot v-bind="$attrs" />
+    </div>
+    <div class="field__errors">
       <div
         v-for="error in errors"
         ref="error"
         :key="error"
-        class="error-message"
+        class="field__error"
       >
         {{ error }}
       </div>
@@ -18,7 +39,17 @@
 <script>
 export default {
   name: "Field",
+  mounted() {
+    console.log("wtf", this.$attrs);
+  },
   props: {
+    /**
+     * Field description
+     */
+    description: {
+      type: String,
+      required: false
+    },
     /**
      * Errors to be displayed alongside the field input
      */
@@ -40,19 +71,40 @@ export default {
       type: Boolean,
       default: false
     }
+  },
+  computed: {
+    ariaLabelledby() {
+      return `aria-${this._uid}-label`;
+    },
+    ariaDescribedby() {
+      return `aria-${this._uid}-description`;
+    }
+  },
+  provide() {
+    return {
+      ariaLabelledby: this.ariaLabelledby,
+      ariaDescribedby: this.ariaDescribedby,
+      fieldProps: this.$props
+    };
   }
 };
 </script>
 
 <style lang="scss">
 .field {
+  margin-bottom: $field-margin;
+
+  &__header {
+    padding-left: $input-border-width;
+    padding-bottom: $field-label-padding-bottom;
+  }
+
   &__label {
     color: $field-label-color;
     font-size: $field-label-font-size;
     line-height: $field-label-line-height;
     display: block;
     font-weight: $field-label-font-weight;
-    padding: $field-label-padding;
 
     &::after {
       content: "*";
@@ -68,25 +120,29 @@ export default {
 
   &__errors {
     margin-top: $field-errors-margin-top;
-
-    .error-message {
-      align-items: center;
-      color: $danger-color;
-      display: flex;
-      font-size: $field-label-font-size;
-      font-style: inherit;
-      font-weight: normal;
-      line-height: $field-label-line-height;
-      padding-left: $input-border-width;
-    }
+    padding-left: $input-border-width;
   }
 
-  &:first-child &__label {
-    padding-top: 0;
+  &__description,
+  &__error {
+    font-size: $field-label-font-size;
+    font-style: inherit;
+    font-weight: normal;
+    line-height: $field-label-line-height;
   }
 
-  &[is-required] .field-group__label::after {
+  &__error {
+    align-items: center;
+    color: $danger-color;
+    display: flex;
+  }
+
+  &[is-required] .field__label::after {
     opacity: 1;
+  }
+
+  &__content {
+    display: flex;
   }
 }
 </style>

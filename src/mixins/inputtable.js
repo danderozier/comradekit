@@ -28,6 +28,13 @@ export default {
     isLoading: {
       type: Boolean,
       default: false
+    },
+    /**
+     * Same as native `required`.
+     */
+    required: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

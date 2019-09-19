@@ -29,6 +29,11 @@ export default {
       default: "viewport"
     }
   },
+  data() {
+    return {
+      popper: null
+    };
+  },
   mounted() {
     this.$nextTick(() => {
       this.initPopper();
@@ -42,6 +47,7 @@ export default {
       const [defaultSlot] = this.$slots.default;
       this.popper = new Popper(this.targetElement, defaultSlot.elm, {
         placement: this.placement,
+        onCreate: this.onCreate,
         modifiers: {
           offset: { offset: this.offset },
           preventOverflow: {
@@ -57,6 +63,9 @@ export default {
       if (this.popper) {
         this.popper.update();
       }
+    },
+    onCreate(data) {
+      this.$emit("create", data);
     }
   },
   render() {
