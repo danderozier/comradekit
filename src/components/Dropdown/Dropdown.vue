@@ -10,7 +10,7 @@
       @keyup.up="prevItem"
     >
       <!-- @slot Dropdown trigger (button, input, etc) -->
-      <slot name="trigger" />
+      <slot name="trigger" /> {{ focusedItemIndex }}
     </div>
 
     <div class="dropdown__content" ref="content">
@@ -33,7 +33,7 @@
           tabindex="-1"
         >
           <!-- @slot Dropdown content -->
-          <slot />
+          <slot ref="dilb" />
         </div>
       </Popper>
     </div>
@@ -86,7 +86,10 @@ export default {
       this.close();
     },
     onItemHover(item) {
-      this.focusedItemIndex = _.findIndex(this.items, i => i === item);
+      this.focusedItemIndex = _.findIndex(
+        this.items,
+        i => i._uid === item._uid
+      );
     },
     prevItem() {
       const item = this.items[this.focusedItemIndex - 1];
@@ -97,7 +100,7 @@ export default {
         this.focusedItemIndex = this.items.length;
         this.prevItem();
         return;
-      } else if (item.hasAttribute("disabled")) {
+      } else if (item.isDisabled) {
         this.focusedItemIndex--;
         this.prevItem();
         return;
@@ -114,7 +117,7 @@ export default {
         this.focusedItemIndex = -1;
         this.nextItem();
         return;
-      } else if (item.hasAttribute("disabled")) {
+      } else if (item.isDisabled) {
         this.focusedItemIndex++;
         this.nextItem();
         return;
@@ -123,8 +126,16 @@ export default {
       }
     },
     updateItems() {
-      this.items = Array.from(
-        this.$refs.content.querySelectorAll(".dropdown-item")
+      this.items = _.map(
+        _.filter(this.$slots.default, el => {
+          return (
+            el.componentInstance &&
+            el.componentInstance.$options._componentTag === "DropdownItem"
+          );
+        }),
+        el => {
+          return el.componentInstance;
+        }
       );
     }
   },
@@ -139,9 +150,9 @@ export default {
       }
     },
     focusedItemIndex() {
-      if (this.focusedItemIndex !== undefined) {
-        this.items[this.focusedItemIndex].focus();
-      }
+      this.items.forEach((item, index) => {
+        item.isFocused = this.focusedItemIndex === index;
+      });
     }
   }
 };

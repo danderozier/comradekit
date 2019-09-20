@@ -23,7 +23,7 @@
         v-for="(option, index) in filteredOptions"
         :key="index"
         :selected="isSelected(option)"
-        @click="onSelect(option)"
+        @select="onSelect(option)"
       >
         <slot name="dropdown-item">{{ labelFor(option) }}</slot>
       </DropdownItem>

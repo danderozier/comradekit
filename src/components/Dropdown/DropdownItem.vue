@@ -13,7 +13,7 @@
     @blur="onBlur"
     v-on="$listeners"
   >
-    <slot></slot>
+    <slot></slot> {{ isFocused }}
   </div>
 </template>
 
@@ -45,33 +45,37 @@ export default {
       isFocused: false
     };
   },
-  watch: {
-    isFocused: {
-      handler(isFocused) {
-        if (isFocused) {
-          this.$nextTick(() => this.$el.focus());
-        } else {
-          this.$nextTick(() => this.$el.blur());
-        }
-      },
-      immediate: true
-    }
-  },
+  // watch: {
+  //   isFocused: {
+  //     handler(isFocused) {
+  //       if (isFocused) {
+  //         this.$nextTick(() => this.$el.focus());
+  //       } else {
+  //         this.$nextTick(() => this.$el.blur());
+  //       }
+  //     },
+  //     immediate: true
+  //   }
+  // },
   methods: {
+    dilb() {
+      console.log("dingle");
+      this.isFocused = true;
+    },
     onClick() {
-      this.$parent.$emit("select", this.$el);
+      this.$parent.$emit("select", this);
       this.$emit("select");
     },
     onFocus() {
-      this.isFocused = true;
+      // this.isFocused = true;
     },
     onBlur() {
-      this.isFocused = false;
+      // this.isFocused = false;
     },
     onMouseover() {
       if (!this.focusable) return;
 
-      this.$parent.$emit("hover", this.$el);
+      this.$parent.$emit("hover", this);
       this.isFocused = true;
     },
     onMouseleave() {
@@ -104,7 +108,7 @@ export default {
   padding: $dropdown-item-padding;
 
   &:focus {
-    outline: none;
+    // outline: none;
   }
 
   &[focused]:not([disabled]):not([selected]) {
