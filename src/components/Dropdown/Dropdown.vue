@@ -1,160 +1,146 @@
 <template>
-  <div class="dropdown" ref="wrapper" @keydown="onKeyDown" @blur="onBlur">
+  <div class="dropdown" ref="wrapper">
     <div
-      class="dropdown-trigger"
-      @click.stop="isOpen = !isOpen"
-      @open-dropdown="isOpen = true"
+      @click="toggle"
+      aria-haspopup="true"
+      class="dropdown__trigger"
+      ref="trigger"
+      role="button"
+      @keyup.down="nextItem"
+      @keyup.up="prevItem"
     >
-      <slot name="trigger" v-on="$listeners" />
+      <!-- @slot Dropdown trigger (button, input, etc) -->
+      <slot name="trigger" />
     </div>
 
-    <div
-      class="dropdown-content"
-      ref="content"
-      tabindex="-1"
-      v-show="isOpen"
-      v-on-clickaway="onClickaway"
-      @click="onDropdownItemClick"
-    >
-      <slot v-on="$listeners" />
+    <div class="dropdown__content" ref="content">
+      <Popper
+        v-if="isOpen"
+        :target-element="this.$refs.trigger"
+        placement="bottom-start"
+        :flip-variations-by-content="true"
+        @hover="onItemHover"
+        @previous="prevItem"
+        @next="nextItem"
+        @select="onSelect"
+        @cancel="close"
+      >
+        <div
+          :role="ariaRole"
+          :aria-hidden="!isOpen"
+          class="dropdown-content"
+          ref="contentz"
+          tabindex="-1"
+        >
+          <!-- @slot Dropdown content -->
+          <slot />
+        </div>
+      </Popper>
     </div>
   </div>
 </template>
 
 <script>
-import { keyCodes } from "@utilities/helpers";
-import { mixin as clickaway } from "vue-clickaway";
+import Popper from "@components/Popper/Popper";
+import { clickaway } from "@mixins";
+import { inclusionValidator } from "@utilities/propValidators";
 import _ from "lodash";
 
 export default {
   name: "Dropdown",
   mixins: [clickaway],
+  components: { Popper },
   data() {
     return {
-      dropdownItems: [],
-      currentIndex: -1,
       isOpen: false,
-      isFocused: false
+      isFocused: false,
+      items: [],
+      focusedItemIndex: undefined
     };
   },
   props: {
-    value: {
-      type: [String, Number, Object, Array],
-      default: undefined
-    }
-  },
-  mounted() {
-    this.$on("dropdown-item-hover", el => {
-      this.currentIndex = _.findIndex(this.dropdownItems, i => {
-        return i === el;
-      });
-    });
-  },
-  watch: {
-    isOpen(value) {
-      this.getDropdownItems();
-
-      if (value) {
-        this.$nextTick(() => this.$refs.wrapper.focus());
-        this.$emit("dropdown-close");
-      } else {
-        this.$nextTick(() => this.$refs.wrapper.blur());
-        this.$emit("dropdown-open");
-        this.currentIndex = undefined;
+    ariaRole: {
+      type: String,
+      required: false,
+      validator: prop => {
+        inclusionValidator(prop, "list", "menu");
       }
-    },
-    currentIndex() {
-      this.dropdownItems.forEach((item, index) => {
-        this.currentIndex === index
-          ? item.setAttribute("focused", true)
-          : item.removeAttribute("focused");
-      });
     }
   },
   methods: {
-    onBlur() {
-      console.log("Dropdown: onBlur()");
-    },
-    onDropdownItemClick() {
-      this.isOpen = false;
-    },
-    onKeyDown(e) {
-      console.log("Dropdown: onKeyDown()");
-      if (e.keyCode === keyCodes.esc) {
-        this.isOpen = false;
-      } else if (
-        !this.isOpen &&
-        [keyCodes.up, keyCodes.down].includes(e.keyCode)
-      ) {
-        this.isOpen = true;
-      }
-
-      this.$nextTick(() => this.updateCurrentIndex(e));
-    },
-    onClickaway() {
-      if (this.isOpen) this.isOpen = false;
+    toggle() {
+      this.isOpen = !this.isOpen;
     },
     close() {
       this.isOpen = false;
+      this.$emit("close");
     },
     open() {
       this.isOpen = true;
+      this.$emit("open");
     },
-    getDropdownItems() {
-      this.dropdownItems = Array.from(
-        this.$refs.content.querySelectorAll(".dropdown-item")
-      );
+    onSelect() {
+      this.close();
     },
-    updateCurrentIndex(e) {
-      this.getDropdownItems();
-
-      if (e.keyCode === keyCodes.tab) {
-        this.isOpen = false;
-        return;
-      } else if (e.keyCode === keyCodes.down) {
-        this.nextItem();
-      } else if (e.keyCode === keyCodes.up) {
-        this.prevItem();
-      } else if (e.keyCode === keyCodes.enter && this.currentIndex !== -1) {
-        this.dropdownItems[this.currentIndex].click();
-      } else {
-        return;
-      }
-
-      e.preventDefault();
+    onClickaway() {
+      this.close();
     },
-    nextItem() {
-      const item = this.dropdownItems[this.currentIndex + 1];
-
-      if (!item) {
-        if (!this.dropdownItems.length) return;
-
-        this.currentIndex = -1;
-        this.nextItem();
-        return;
-      } else if (item.hasAttribute("disabled")) {
-        this.currentIndex++;
-        this.nextItem();
-        return;
-      } else {
-        this.currentIndex++;
-      }
+    onItemHover(item) {
+      this.focusedItemIndex = _.findIndex(this.items, i => i === item);
     },
     prevItem() {
-      const item = this.dropdownItems[this.currentIndex - 1];
+      const item = this.items[this.focusedItemIndex - 1];
 
       if (!item) {
-        if (!this.dropdownItems.length) return;
+        if (!this.items.length) return;
 
-        this.currentIndex = this.dropdownItems.length;
+        this.focusedItemIndex = this.items.length;
         this.prevItem();
         return;
       } else if (item.hasAttribute("disabled")) {
-        this.currentIndex--;
+        this.focusedItemIndex--;
         this.prevItem();
         return;
       } else {
-        this.currentIndex--;
+        this.focusedItemIndex--;
+      }
+    },
+    nextItem() {
+      const item = this.items[this.focusedItemIndex + 1];
+
+      if (!item) {
+        if (!this.items.length) return;
+
+        this.focusedItemIndex = -1;
+        this.nextItem();
+        return;
+      } else if (item.hasAttribute("disabled")) {
+        this.focusedItemIndex++;
+        this.nextItem();
+        return;
+      } else {
+        this.focusedItemIndex++;
+      }
+    },
+    updateItems() {
+      this.items = Array.from(
+        this.$refs.content.querySelectorAll(".dropdown-item")
+      );
+    }
+  },
+  watch: {
+    isOpen(value) {
+      if (value) {
+        this.$nextTick(() => {
+          this.updateItems();
+        });
+      } else {
+        this.focusedItemIndex = undefined;
+      }
+    },
+    focusedItemIndex() {
+      if (this.focusedItemIndex !== undefined) {
+        this.items[this.focusedItemIndex].focus();
       }
     }
   }
@@ -171,8 +157,13 @@ $dropdown-box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px,
 $dropdown-margin: 0.5rem;
 
 .dropdown {
+  display: inline-flex;
   position: relative;
   z-index: 1;
+
+  &__trigger {
+    flex: auto;
+  }
 
   .dropdown-content {
     background-color: $dropdown-background-color;
@@ -181,11 +172,11 @@ $dropdown-margin: 0.5rem;
     display: inline-flex;
     flex-direction: column;
     font-size: $dropdown-font-size;
-    left: 0;
+    // left: 0;
     padding: $dropdown-padding;
-    position: absolute;
-    top: calc(#{$dropdown-margin} + 100%);
-    z-index: 1;
+    // position: absolute;
+    // top: calc(#{$dropdown-margin} + 100%);
+    // z-index: 1;
 
     &:focus {
       outline: none;

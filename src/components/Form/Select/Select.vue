@@ -22,17 +22,21 @@
       <DropdownItem
         v-for="(option, index) in filteredOptions"
         :key="index"
-        :selected="isSelected(option.value)"
-        @click="selectOption(option)"
+        :selected="isSelected(option)"
+        @click="onSelect(option)"
       >
-        <slot name="dropdown-item">{{ option.label }}</slot>
+        <slot name="dropdown-item">{{ labelFor(option) }}</slot>
       </DropdownItem>
 
-      <DropdownItem
-        v-if="filteredOptions.length === 0 && !allowCreate"
-        :disabled="true"
-        >No options</DropdownItem
-      >
+      <DropdownItem v-if="showCreateItem" @click="create()">
+        <!-- @slot Custom template for "add" item -->
+        <slot name="add">Add "{{ searchText }}"</slot>
+      </DropdownItem>
+
+      <DropdownItem v-if="filteredOptions.length === 0" :disabled="true">
+        <!-- @slot Custom template for "empty" item -->
+        <slot name="empty">No options</slot>
+      </DropdownItem>
     </Dropdown>
   </div>
 </template>
@@ -61,7 +65,7 @@ export default {
     },
     labelField: {
       type: String,
-      default: undefined
+      default: "label"
     },
     normalizer: {
       type: Function,
@@ -88,44 +92,79 @@ export default {
     };
   },
   computed: {
+    // computedValue: {
+    //   get() {
+    //     if (_.isObject(this.value)) {
+    //       return _.find(this.value);
+    //     }
+    //   }
+    // },
+    showCreateItem() {
+      if (!this.allowCreate || !this.searchText) return false;
+
+      console.log();
+
+      return (
+        _.filter(this.options, o => {
+          return this.labelFor(o) === this.searchText;
+        }).length === 0
+      );
+    },
     normalizedSearchText() {
       return this.normalizer(this.searchText);
     },
     filteredOptions() {
-      var options = _.map(this.options, option => {
-        return {
-          label: this.labelFor(option),
-          value: option
-        };
+      // var options = _.map(this.options, option => {
+      //   return {
+      //     label: this.labelFor(option),
+      //     value: option
+      //   };
+      // });
+      return _.filter(this.options, o => {
+        if (!this.searchText) return true;
+
+        return (
+          this.normalizer(this.labelFor(o)).search(
+            this.normalizer(this.searchText)
+          ) > -1
+        );
       });
 
-      if (this.searchText) {
-        options = _.filter(options, o => {
-          return (
-            this.normalizer(o.label).search(this.normalizedSearchText) > -1
-          );
-        });
+      // if (this.searchText) {
+      //   options = _.filter(options, o => {
+      //     return (
+      //       this.normalizer(o.label).search(this.normalizedSearchText) > -1
+      //     );
+      //   });
 
-        if (this.allowCreate) {
-          options.push({
-            label: `Add "${this.searchText}"`,
-            value: this.searchText
-          });
-        }
-      }
+      // if (this.allowCreate) {
+      //   options.push({
+      //     label: `Add "${this.searchText}"`,
+      //     value: this.searchText
+      //   });
+      // }
+      // }
 
-      return options;
+      // return options;
     }
   },
   methods: {
+    /**
+     * We can't assume what to do with a newly-created option,
+     * so we pass it up the chain via an event.
+     */
+    create() {
+      this.$emit("create", this.searchText);
+    },
     isSelected(value) {
       return this.value === value;
     },
     labelFor(option) {
+      console.log("labelFor", option);
       return _.isObject(option) ? option[this.labelField] : option;
     },
-    selectOption(option) {
-      this.$emit("input", option.value);
+    onSelect(option) {
+      this.$emit("input", option);
       this.searchText = undefined;
     },
     onKeyboardDelete(e) {
@@ -143,6 +182,10 @@ export default {
   position: relative;
 
   ::v-deep .dropdown-content {
+    width: 100%;
+  }
+
+  ::v-deep .dropdown {
     width: 100%;
   }
 }

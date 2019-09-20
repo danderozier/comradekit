@@ -7,7 +7,7 @@
     :selected="isSelected"
     :loading="isLoading"
     :spacing="spacing"
-    v-on="computedListeners"
+    v-on="$listeners"
   >
     <span class="wrapper" tabindex="-1" :class="computedClasses">
       <!-- @slot Include an icon before button content -->

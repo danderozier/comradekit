@@ -10,11 +10,19 @@ export default {
     },
     placement: {
       type: String,
-      default: "bottom-end"
+      default: "bottom-start"
     },
     flipBehavior: {
       type: [String, Array],
       default: "flip"
+    },
+    flipVariations: {
+      type: Boolean,
+      default: false
+    },
+    flipVariationsByContent: {
+      type: Boolean,
+      default: false
     },
     offset: {
       type: String,
@@ -51,10 +59,13 @@ export default {
         modifiers: {
           offset: { offset: this.offset },
           preventOverflow: {
-            boundariesElement: this.boundariesElement
+            boundariesElement: this.boundariesElement,
+            escapeWithReference: true
           },
           flip: {
-            behavior: this.flipBehavior
+            boundariesElement: this.boundariesElement,
+            behavior: this.flipBehavior,
+            flipVariationsByContent: this.flipVariationsByContent
           }
         }
       });
