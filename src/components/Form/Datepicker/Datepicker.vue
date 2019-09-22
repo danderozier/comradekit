@@ -33,7 +33,7 @@ import _ from "lodash";
 import inputtable from "@mixins/inputtable";
 
 export default {
-  name: "Select",
+  name: "Datepicker",
   mixins: [inputtable],
   components: {
     Calendar,

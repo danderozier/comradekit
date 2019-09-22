@@ -39,9 +39,6 @@
 <script>
 export default {
   name: "Field",
-  mounted() {
-    console.log("wtf", this.$attrs);
-  },
   props: {
     /**
      * Field description

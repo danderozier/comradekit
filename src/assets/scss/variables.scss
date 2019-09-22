@@ -62,6 +62,13 @@ $icon-size-normal: 1.5rem;
 $icon-size-large: 2rem;
 $icon-size-xlarge: 3rem;
 
+$dropdown-item-padding: 0.5rem 0.75rem;
+$dropdown-item-background-color-hover: #eee;
+$dropdown-item-color-hover: inherit;
+$dropdown-item-background-color-selected: blue;
+$dropdown-item-color-selected: white;
+$dropdown-item-opacity-disabled: 0.5;
+
 html,
 body {
   font-family: $font;

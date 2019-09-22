@@ -1,18 +1,25 @@
 <template>
   <div
     class="dropdown-item"
+    tabindex="0"
     :disabled="disabled"
     :selected="selected"
     :focused="isFocused"
-    @keyup.enter="onEnter"
+    @click="onClick"
+    @keydown="onKeydown"
     @mouseover="onMouseover"
+    @mouseleave="onMouseleave"
+    @focus="onFocus"
+    @blur="onBlur"
     v-on="$listeners"
   >
-    <slot></slot>
+    <slot></slot> {{ isFocused }}
   </div>
 </template>
 
 <script>
+import { keyCodes } from "@utilities/helpers";
+
 export default {
   name: "DropdownItem",
   props: {
@@ -24,6 +31,10 @@ export default {
       type: Boolean,
       default: false
     },
+    focusable: {
+      type: Boolean,
+      default: true
+    },
     selected: {
       type: Boolean,
       default: false
@@ -34,34 +45,71 @@ export default {
       isFocused: false
     };
   },
+  // watch: {
+  //   isFocused: {
+  //     handler(isFocused) {
+  //       if (isFocused) {
+  //         this.$nextTick(() => this.$el.focus());
+  //       } else {
+  //         this.$nextTick(() => this.$el.blur());
+  //       }
+  //     },
+  //     immediate: true
+  //   }
+  // },
   methods: {
-    // emitSelect() {
-    //   console.log("DropdownItem emitSelect()");
-    //   this.$emit("select");
-    //   this.$parent.$emit("item-select");
-    // },
-    onEnter() {
-      console.log("DropdownItem onEnter()");
+    dilb() {
+      console.log("dingle");
+      this.isFocused = true;
+    },
+    onClick() {
+      this.$parent.$emit("select", this);
+      this.$emit("select");
+    },
+    onFocus() {
+      // this.isFocused = true;
+    },
+    onBlur() {
+      // this.isFocused = false;
     },
     onMouseover() {
-      this.$parent.$emit("dropdown-item-hover", this.$el);
+      if (!this.focusable) return;
+
+      this.$parent.$emit("hover", this);
+      this.isFocused = true;
+    },
+    onMouseleave() {
+      this.isFocused = false;
+    },
+    onKeydown(e) {
+      switch (e.keyCode) {
+        case keyCodes.enter:
+          this.onClick();
+          break;
+        case keyCodes.up:
+          this.$parent.$emit("previous");
+          break;
+        case keyCodes.down:
+          this.$parent.$emit("next");
+          break;
+        case keyCodes.esc:
+          this.$parent.$emit("cancel");
+          break;
+      }
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-$dropdown-item-padding: 0.5rem 0.75rem;
-$dropdown-item-background-color-hover: #eee;
-$dropdown-item-color-hover: inherit;
-$dropdown-item-background-color-selected: blue;
-$dropdown-item-color-selected: white;
-$dropdown-item-opacity-disabled: 0.5;
-
 .dropdown-item {
   cursor: pointer;
   min-width: 16rem;
   padding: $dropdown-item-padding;
+
+  &:focus {
+    // outline: none;
+  }
 
   &[focused]:not([disabled]):not([selected]) {
     background: $dropdown-item-background-color-hover;
