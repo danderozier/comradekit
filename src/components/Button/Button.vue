@@ -18,10 +18,10 @@
       </span>
       <!-- @slot Include an icon after button content -->
       <slot v-if="!isLoading" name="icon-after" />
-      <!-- <Spinner
+      <Spinner
         v-if="isLoading"
-        :size="spacing === 'default' ? 'small' : 'icon'"
-      /> -->
+        :size="spacing === 'default' ? 'is-small' : 'is-xsmall'"
+      />
     </span>
   </button>
 </template>
@@ -185,16 +185,20 @@ button[loading] span.label {
   opacity: 0;
 }
 
-button[loading] >>> .spinner {
-  display: flex;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+button[loading] {
+  ::v-deep .spinner {
+    display: flex;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
 
-button[loading][selected] >>> .spinner {
-  color: #fff;
+button[loading][selected] {
+  ::v-deep .spinner {
+    color: #fff;
+  }
 }
 
 button:focus {
@@ -334,24 +338,20 @@ button[selected]:active {
   text-decoration: none;
 }
 
-button[selected] >>> svg,
-button[selected]:hover >>> svg,
-button[selected]:active >>> svg {
+button[selected] ::v-deep svg,
+button[selected]:hover ::v-deep svg,
+button[selected]:active ::v-deep svg {
   color: rgb(244, 245, 247);
 }
 
 button[disabled] span.wrapper,
-button[disabled] >>> svg {
+button[disabled] ::v-deep svg {
   color: rgb(165, 173, 186);
   pointer-events: none;
 }
 
 button[disabled] {
   cursor: not-allowed;
-}
-
-button[loading][disabled] >>> .spinner {
-  color: #172b4d;
 }
 
 button[disabled]:not([appearance="subtle-link"]):not([appearance="link"]):not([appearance="subtle"]) {
