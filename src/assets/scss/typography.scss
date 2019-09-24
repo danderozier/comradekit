@@ -1,0 +1,21 @@
+html {
+  font-family: $body-font-family;
+}
+
+.heading {
+  font-weight: $heading-font-weight;
+}
+
+@for $i from 1 through 9 {
+  .is-#{$i} {
+    font-size: map-get($font-sizes, $i);
+    line-height: map-get($line-heights, $i);
+    margin-bottom: map-get($font-spacings, $i);
+  }
+}
+
+p {
+  font-size: $font-size-7;
+  line-height: map-get($line-heights, 7);
+  margin-bottom: $font-spacing-7;
+}
