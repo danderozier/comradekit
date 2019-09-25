@@ -19,3 +19,16 @@ p {
   line-height: map-get($line-heights, 7);
   margin-bottom: $font-spacing-7;
 }
+
+pre {
+  > code {
+    display: block;
+  }
+}
+
+code {
+  background: #ddd;
+  font-family: $code-font-family;
+  padding: 1rem;
+  margin: 1rem 0;
+}

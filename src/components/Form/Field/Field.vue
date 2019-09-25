@@ -67,6 +67,21 @@ export default {
     required: {
       type: Boolean,
       default: false
+    },
+    /**
+     * Property to use for value and errors. Only used if
+     * Field is used in conjunction with Form.
+     */
+    property: {
+      type: String,
+      required: false
+    },
+    /**
+     * Optional value for
+     * @model
+     */
+    value: {
+      required: false
     }
   },
   computed: {
@@ -76,6 +91,11 @@ export default {
     ariaDescribedby() {
       return `aria-${this._uid}-description`;
     }
+  },
+  methods: {
+    // onInput(value) {
+    //   this.$emit("input", value);
+    // }
   },
   provide() {
     return {

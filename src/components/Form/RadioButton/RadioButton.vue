@@ -1,23 +1,25 @@
 <template>
   <label
-    ref="radio-button"
-    class="radio-button"
-    :for="id"
+    ref="wrapper"
+    class="radio-button inline-input"
     tabindex="-1"
+    :for="id"
     :is-disabled="isDisabled"
-    :style="{ display: isBlock ? 'block' : 'inline-block' }"
+    :is-focused="isFocused"
+    :is-invalid="isInvalid"
+    @click="focusInput"
+    @keydown.prevent.enter="$refs.wrapper.click()"
   >
     <input
       type="radio"
       ref="input"
       v-model="computedValue"
-      :value="nativeValue"
-      :id="id"
-      :is-invalid="isInvalid"
       :disabled="isDisabled"
-      @focus="onFocus"
-      @blur="onBlur"
-      @change="onChange"
+      :required="required"
+      :id="id"
+      :value="nativeValue"
+      @blur="onInputBlur"
+      @focus="onInputFocus"
     />
     <Icon icon="radio-button" size="is-xsmall" />
     <span v-if="$slots['default']" class="label"><slot /></span>
@@ -26,173 +28,76 @@
 
 <script>
 import Icon from "@components/Icon/Icon";
+import InputMixin from "@/mixins/InputMixin";
 
 export default {
   name: "RadioButton",
   components: { Icon },
+  mixins: [InputMixin],
   props: {
-    isBlock: {
-      type: Boolean,
-      default: false
-    },
-    isDisabled: {
-      type: Boolean,
-      default: false
-    },
-    isFocused: {
-      type: Boolean,
-      default: false
-    },
-    isInvalid: {
-      type: Boolean,
-      default: false
-    },
     nativeValue: {
-      type: null,
+      type: [String, Number, Boolean, Function, Object, Array],
       required: true
     },
+    name: String,
     value: {
-      type: null,
+      type: [String, Number, Boolean, Function, Object, Array],
       default: false
-    }
-  },
-  data() {
-    return { id: undefined };
-  },
-  computed: {
-    computedValue: {
-      get() {
-        return this.value;
-      },
-      set() {
-        this.$emit("input", this.nativeValue);
-      }
-    }
-  },
-  watch: {
-    isFocused: {
-      handler(isFocused) {
-        if (isFocused) {
-          this.$nextTick(() => this.$refs.input.focus());
-        }
-      },
-      immediate: true
     }
   },
   created() {
-    this.id = this._uid;
-  },
-  methods: {
-    onBlur(e) {
-      if (!this.$refs.checkbox.contains(e.relatedTarget)) {
-        this.$emit("blur", e);
-      }
-    },
-    onChange(e) {
-      this.$emit("change", e);
-    },
-    onFocus(e) {
-      this.$emit("focus", e);
-    }
+    this.id = `ck-radioButton-${this._uid}`;
   }
 };
 </script>
 
 <style lang="scss" scoped>
 .radio-button {
-  display: inline-flex;
-  position: relative;
-  cursor: pointer;
-  outline: none;
+  /**
+   * Default component appearance
+  **/
+  .icon {
+    ::v-deep circle {
+      color: $radio-button-color;
+      stroke: $radio-button-border-color;
+      stroke-width: $input-border-width;
+      transition: $input-transition;
+    }
 
-  + .radio-button {
-    margin-top: $input-padding;
-  }
-
-  .label {
-    font-size: $input-font-size;
-    line-height: 1;
-    padding: ($icon-size-xsmall - $input-font-size)/2 $input-padding;
-  }
-
-  &[is-disabled] {
-    .label {
-      opacity: 0.5;
+    ::v-deep path {
+      fill: $radio-button-color;
+      transition: $input-transition;
     }
   }
 
+  /**
+   * Checked state
+  **/
   input[type="radio"] {
-    left: 50%;
-    margin: 0;
-    opacity: 0;
-    padding: 0;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    cursor: pointer;
-
-    + .icon {
-      ::v-deep circle {
-        color: $input-background-color;
-        stroke: $input-border-color;
-        stroke-width: $input-border-width;
-        transition: $input-transition;
-      }
-
-      ::v-deep path {
-        fill: $input-background-color;
-        transition: $input-transition;
-      }
-    }
-
     &:checked {
       + .icon {
         ::v-deep circle {
-          color: $primary-color;
-          fill: $primary-color;
-          stroke: $primary-color;
-        }
-      }
-    }
-
-    &:not([is-invalid]):focus {
-      + .icon {
-        ::v-deep circle {
-          stroke: $input-border-color-focused;
-        }
-      }
-    }
-
-    &[is-invalid] {
-      + .icon {
-        ::v-deep circle {
-          stroke: $input-border-color-invalid;
-        }
-      }
-    }
-
-    &[is-disabled],
-    &[disabled] {
-      + .icon {
-        ::v-deep circle {
-          fill: currentColor !important;
-          stroke: currentColor !important;
-          opacity: 0.5 !important;
+          color: $radio-button-color--checked;
+          fill: $radio-button-color--checked;
+          stroke: $radio-button-border-color--checked;
         }
       }
     }
   }
 
+  /**
+   * Hover state
+  **/
   &:hover {
     input[type="radio"] {
       &:not(:checked) {
         + .icon {
           ::v-deep circle {
-            fill: $input-background-color-hover;
+            fill: $radio-button-color--hover;
           }
 
           ::v-deep path {
-            fill: $input-background-color-hover;
+            fill: $radio-button-color--hover;
           }
         }
       }
@@ -200,10 +105,74 @@ export default {
       &:checked {
         + .icon {
           ::v-deep circle {
-            fill: lighten($primary-color, 10);
-            stroke: lighten($primary-color, 10);
+            fill: $radio-button-color--checked--hover;
+            stroke: $radio-button-color--checked--hover;
           }
         }
+      }
+    }
+  }
+
+  /**
+   * Active state
+  **/
+  &:active {
+    input[type="radio"] {
+      &:not(:checked) {
+        + .icon {
+          ::v-deep circle {
+            fill: $radio-button-color--active;
+          }
+
+          ::v-deep path {
+            fill: $radio-button-color--active;
+          }
+        }
+      }
+
+      &:checked {
+        + .icon {
+          ::v-deep circle {
+            fill: $radio-button-color--checked--active;
+            stroke: $radio-button-color--checked--active;
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Focused state
+  **/
+  &:not([is-invalid])[is-focused] {
+    > .icon {
+      ::v-deep circle {
+        stroke: $radio-button-border-color--focus;
+      }
+    }
+  }
+
+  /**
+   * Invalid state
+  **/
+  &[is-invalid] {
+    > .icon {
+      ::v-deep circle {
+        stroke: $radio-button-border-color--invalid;
+      }
+    }
+  }
+
+  /**
+   * Disabled state
+  **/
+  &[is-disabled] {
+    > .icon {
+      opacity: 0.5 !important;
+
+      ::v-deep circle {
+        fill: currentColor !important;
+        stroke: currentColor !important;
       }
     }
   }

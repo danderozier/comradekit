@@ -1,11 +1,13 @@
 ```vue
 <template>
   <div>
+  <!--
     <Button @click="onClick">Click me!</Button>
     <transition name="fade">
       <Overlay v-if="isOpen" @close="isOpen = false" :is-closable="isClosable"/>
     </transition>
   </div>
+  -->
 </template>
 
 <script>

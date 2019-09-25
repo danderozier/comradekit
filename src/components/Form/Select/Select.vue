@@ -47,11 +47,11 @@ import DropdownItem from "@components/Dropdown/DropdownItem";
 import SelectInputWrapper from "@components/Form/_SelectInputWrapper";
 import TextRenderer from "@components/Form/_TextRenderer";
 import _ from "lodash";
-import inputtable from "@mixins/inputtable";
+import InputMixin from "@mixins/InputMixin";
 
 export default {
   name: "Select",
-  mixins: [inputtable],
+  mixins: [InputMixin],
   components: {
     Dropdown,
     DropdownItem,

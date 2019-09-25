@@ -1,6 +1,7 @@
 ```vue
 <template>
   <div>
+    <!--
     <Button @click="isOpen1 = true">Click me!</Button>
     <Modal :is-open.sync="isOpen1" >
       Lips
@@ -12,6 +13,7 @@
       <Button @click="isOpen2 = false">Close</Button>
     </Modal>
   </div>
+  -->
 </template>
 
 <script>

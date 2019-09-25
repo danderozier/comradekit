@@ -8,29 +8,33 @@
     :style="{ width }"
   >
     <input
-      type="text"
       ref="input"
       v-model="computedValue"
-      :maxlength="maxlength"
-      :placeholder="placeholder"
+      v-on="inputListeners"
       :aria-describedby="ariaDescribedby"
       :aria-labelledby="ariaLabelledby"
       :aria-required="required"
+      :disabled="isDisabled"
+      :maxlength="maxlength"
+      :placeholder="placeholder"
       :required="required"
-      @focus="onFocus"
-      @blur="onBlur"
+      :type="inputType"
+      @focus="onInputFocus"
+      @blur="onInputBlur"
     />
+    <Icon v-if="icon" slot="icon-before" :icon="icon" />
   </TextInputWrapper>
 </template>
 
 <script>
 import TextInputWrapper from "@components/Form/_TextInputWrapper";
-import inputtable from "@mixins/inputtable";
+import Icon from "@components/Icon/Icon";
+import InputMixin from "@mixins/InputMixin";
 
 export default {
   name: "TextInput",
-  mixins: [inputtable],
-  components: { TextInputWrapper },
+  mixins: [InputMixin],
+  components: { TextInputWrapper, Icon },
   // data() {
   //   var result = {};
   //   for (var key in this.fieldProps) {
@@ -44,13 +48,7 @@ export default {
   //   };
   // },
   props: {
-    // test: {
-    //   type: String,
-    //   default() {
-    //     console.log("what");
-    //     return this.fieldProps.label;
-    //   }
-    // },
+    icon: String,
     maxlength: {
       type: Number,
       default: undefined
@@ -66,6 +64,19 @@ export default {
     value: {
       type: [Number, String],
       default: undefined
+    }
+  },
+  computed: {
+    /**
+     * Filter listeners before passing along to input.
+     */
+    inputListeners() {
+      // eslint-disable-next-line
+      const { input, ...listeners } = this.$listeners;
+      return listeners;
+    },
+    inputType() {
+      return "text";
     }
   },
   inject: {

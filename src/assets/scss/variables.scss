@@ -16,6 +16,7 @@ $heading-font-family: $base-font-family;
 $heading-font-weight: 600;
 $body-font-family: $base-font-family;
 $body-font-weight: 300;
+$code-font-family: monospace;
 
 $font-size-1: 3rem;     // 48px
 $line-height-1: 1.125;  // 54px
@@ -99,7 +100,8 @@ $vertical-spacing-normal: 1rem;
 
 $border-radius-small: 0.25rem;
 
-$input-font-size: 0.875rem;
+$input-font-size: $font-size-7;
+$input-line-height: $line-height-7;
 $input-padding: 0.375rem !default;
 $input-border-width: 0.125rem !default;
 $input-border-style: solid !default;
@@ -118,6 +120,36 @@ $input-background-color-select-hover: $gray-3;
 $input-text-color: #333;
 $input-muted-text-color: #777;
 $input-transition: 0.2s ease-in-out;
+
+$radio-button-color: $input-background-color;
+$radio-button-border-color: $input-border-color;
+$radio-button-color--checked: $primary-color;
+$radio-button-border-color--checked: $primary-color;
+$radio-button-color--active: darken($radio-button-color, 10%);
+$radio-button-color--checked--active: darken($radio-button-color--checked, 10%);
+$radio-button-color--hover: $input-background-color-hover;
+$radio-button-color--checked--hover: lighten($radio-button-color--checked, 10%);
+$radio-button-border-color--focus: $input-border-color-focused;
+$radio-button-border-color--invalid: $input-border-color-invalid;
+
+$checkbox-color: $input-background-color;
+$checkbox-border-color: $input-border-color;
+$checkbox-color--checked: $primary-color;
+$checkbox-border-color--checked: $primary-color;
+$checkbox-color--active: darken($checkbox-color, 10%);
+$checkbox-color--checked--active: darken($checkbox-color--checked, 10%);
+$checkbox-color--hover: $input-background-color-hover;
+$checkbox-color--checked--hover: lighten($checkbox-color--checked, 10%);
+$checkbox-border-color--focus: $input-border-color-focused;
+$checkbox-border-color--invalid: $input-border-color-invalid;
+
+$toggle-color: $input-background-color;
+$toggle-background-color: $input-border-color;
+$toggle-background-color--active: darken($toggle-background-color, 10%);
+$toggle-background-color--checked: $primary-color;
+$toggle-background-color--checked--active: darken($primary-color, 10%);
+$toggle-background-color--invalid: $danger-color;
+$toggle-background-color--invalid--active: darken($danger-color, 10%);
 
 $field-margin: 1rem;
 $field-label-color: $gray-color;
@@ -142,12 +174,6 @@ $dropdown-item-color-hover: inherit;
 $dropdown-item-background-color-selected: blue;
 $dropdown-item-color-selected: white;
 $dropdown-item-opacity-disabled: 0.5;
-
-code {
-  background: #ddd;
-  padding: 1rem;
-  margin: 1rem 0;
-}
 
 @mixin transition-fade {
   .fade-enter-active,

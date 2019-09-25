@@ -1,22 +1,29 @@
 <template>
   <label
-    ref="checkbox"
-    class="checkbox"
+    ref="wrapper"
+    class="checkbox inline-input"
     tabindex="-1"
     :for="id"
     :is-disabled="isDisabled"
+    :is-focused="isFocused"
+    :is-invalid="isInvalid"
+    @click="focusInput"
+    @keydown.prevent.enter="$refs.wrapper.click()"
   >
     <input
       type="checkbox"
       ref="input"
       v-model="computedValue"
-      :id="id"
-      :is-invalid="isInvalid"
       :disabled="isDisabled"
+      :false-value="falseValue"
+      :required="required"
+      :id="id"
       :indeterminate="indeterminate"
-      @focus="onFocus"
-      @blur="onBlur"
-      @change="onChange"
+      :name="name"
+      :true-value="trueValue"
+      :value="nativeValue"
+      @blur="onInputBlur"
+      @focus="onInputFocus"
     />
     <Icon :icon="iconType" size="is-xsmall" />
     <span v-if="$slots['default']" class="label"><slot /></span>
@@ -24,19 +31,49 @@
 </template>
 
 <script>
-import inputtable from "@/mixins/inputtable";
-import checkboxInput from "@/mixins/checkboxInput";
+import Icon from "@components/Icon/Icon";
+import InputMixin from "@/mixins/InputMixin";
 
 export default {
   name: "Checkbox",
-  mixins: [inputtable, checkboxInput],
+  components: { Icon },
+  mixins: [InputMixin],
   props: {
     /**
      * Toggle the component's `indeterminate` state.
      */
     indeterminate: {
       type: Boolean
-    }
+    },
+    /**
+     * Binding value
+     * @model
+     */
+    value: [String, Number, Boolean, Function, Object, Array],
+    /**
+     * Same as native `value` attribute
+     */
+    nativeValue: [String, Number, Boolean, Function, Object, Array],
+    trueValue: {
+      type: [String, Number, Boolean, Function, Object, Array],
+      default: true
+    },
+    falseValue: {
+      type: [String, Number, Boolean, Function, Object, Array],
+      default: false
+    },
+    /**
+     * Same as native `name` attribute
+     */
+    name: String
+  },
+  data() {
+    return {
+      id: undefined
+    };
+  },
+  created() {
+    this.id = `ck-checkbox-${this._uid}`;
   },
   computed: {
     iconType() {
@@ -48,101 +85,52 @@ export default {
 
 <style lang="scss" scoped>
 .checkbox {
-  display: flex;
-  position: relative;
-  cursor: pointer;
-  outline: none;
+  /**
+   * Default component appearance
+  **/
+  .icon {
+    ::v-deep rect {
+      color: $checkbox-color;
+      stroke: $checkbox-border-color;
+      stroke-width: $input-border-width;
+      transition: $input-transition;
+    }
 
-  // + .checkbox {
-  //   margin-top: $input-padding;
-  // }
-
-  .label {
-    font-size: $input-font-size;
-    line-height: 1;
-    padding: ($icon-size-xsmall - $input-font-size)/2 $input-padding;
-  }
-
-  &[is-disabled] {
-    .label {
-      opacity: 0.5;
+    ::v-deep path {
+      fill: $checkbox-color;
+      transition: $input-transition;
     }
   }
 
+  /**
+   * Highlighted states (Checked, Indeterminate)
+  **/
   input[type="checkbox"] {
-    left: 50%;
-    margin: 0;
-    opacity: 0;
-    padding: 0;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    cursor: pointer;
-
-    + .icon {
-      ::v-deep rect {
-        color: $input-background-color;
-        stroke: $input-border-color;
-        stroke-width: $input-border-width;
-        transition: $input-transition;
-      }
-
-      ::v-deep path {
-        fill: $input-background-color;
-        transition: $input-transition;
-      }
-    }
-
     &:checked,
     &[indeterminate] {
       + .icon {
         ::v-deep rect {
-          color: $primary-color;
-          fill: $primary-color;
-          stroke: $primary-color;
-        }
-      }
-    }
-
-    &:not([is-invalid]):focus {
-      + .icon {
-        ::v-deep rect {
-          stroke: $input-border-color-focused;
-        }
-      }
-    }
-
-    &[is-invalid] {
-      + .icon {
-        ::v-deep rect {
-          stroke: $input-border-color-invalid;
-        }
-      }
-    }
-
-    &[is-disabled],
-    &[disabled] {
-      + .icon {
-        opacity: 0.5 !important;
-
-        ::v-deep rect {
-          fill: currentColor !important;
-          stroke: currentColor !important;
+          color: $checkbox-color--checked;
+          fill: $checkbox-color--checked;
+          stroke: $checkbox-border-color--checked;
         }
       }
     }
   }
 
+  /**
+   * Hover state
+  **/
   &:hover {
     input[type="checkbox"] {
       &:not(:checked) {
         + .icon {
           ::v-deep rect {
-            fill: $input-background-color-hover;
+            fill: $checkbox-color--hover;
           }
 
           ::v-deep path {
-            fill: $input-background-color-hover;
+            fill: $checkbox-color--hover;
           }
         }
       }
@@ -151,10 +139,75 @@ export default {
       &[indeterminate] {
         + .icon {
           ::v-deep rect {
-            fill: lighten($primary-color, 10);
-            stroke: lighten($primary-color, 10);
+            fill: $checkbox-color--checked--hover;
+            stroke: $checkbox-color--checked--hover;
           }
         }
+      }
+    }
+  }
+
+  /**
+   * Active state
+  **/
+  &:active {
+    input[type="checkbox"] {
+      &:not(:checked) {
+        + .icon {
+          ::v-deep rect {
+            fill: $checkbox-color--active;
+          }
+
+          ::v-deep path {
+            fill: $checkbox-color--active;
+          }
+        }
+      }
+
+      &:checked,
+      &[indeterminate] {
+        + .icon {
+          ::v-deep rect {
+            fill: $checkbox-color--checked--active;
+            stroke: $checkbox-color--checked--active;
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Focused state
+  **/
+  &:not([is-invalid])[is-focused] {
+    > .icon {
+      ::v-deep rect {
+        stroke: $checkbox-border-color--focus;
+      }
+    }
+  }
+
+  /**
+   * Invalid state
+  **/
+  &[is-invalid] {
+    > .icon {
+      ::v-deep rect {
+        stroke: $checkbox-border-color--invalid;
+      }
+    }
+  }
+
+  /**
+   * Disabled state
+  **/
+  &[is-disabled] {
+    > .icon {
+      opacity: 0.5 !important;
+
+      ::v-deep rect {
+        fill: currentColor !important;
+        stroke: currentColor !important;
       }
     }
   }

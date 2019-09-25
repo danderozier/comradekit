@@ -38,7 +38,12 @@ module.exports = {
   css: {
     loaderOptions: {
       sass: {
-        prependData: `@import "~@scss/variables.scss";`
+        prependData: `
+          @import "~@scss/variables.scss";
+          @import "~@scss/reset.scss";
+          @import "~@scss/typography.scss";
+          @import "~@scss/utilities.scss";
+        `
       }
     }
   }

@@ -53,23 +53,43 @@ export default {
     }
   },
   methods: {
+    /**
+     * Blur the input.
+     *
+     * @public
+     */
     blur(e) {
       this.isFocused = false;
       this.$emit("blur", e);
     },
+    /**
+     * Focus the input.
+     *
+     * @public
+     */
     focus(e) {
       this.isFocused = true;
       this.$emit("focus", e);
     },
-    onFocus(e) {
+    blurInput() {
+      this.$nextTick(() => this.$refs.input.blur());
+    },
+    focusInput() {
+      this.$nextTick(() => this.$refs.input.focus());
+    },
+    onInputFocus(e) {
       if (!this.isFocused) {
         this.isFocused = true;
         this.$emit("focus", e);
       }
     },
-    onBlur(e) {
-      this.isFocused = false;
-      this.$emit("blur", e);
+    onInputBlur(e) {
+      // this.$emit("blur", e);
+      // Emit blur event only when the input blur target is external.
+      if (!this.$refs.wrapper.contains(e.relatedTarget)) {
+        this.isFocused = false;
+        this.$emit("blur", e);
+      }
     }
   },
   mounted() {
@@ -81,9 +101,9 @@ export default {
     isFocused: {
       handler(isFocused) {
         if (isFocused) {
-          this.$nextTick(() => this.$refs.input.focus());
+          this.focusInput();
         } else {
-          this.$nextTick(() => this.$refs.input.blur());
+          this.blurInput();
         }
       },
       immediate: true

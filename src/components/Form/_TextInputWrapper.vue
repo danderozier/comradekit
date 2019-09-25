@@ -90,6 +90,7 @@ textarea {
   display: flex;
   flex: 1 0 auto;
   font-size: $input-font-size;
+  line-height: $input-line-height;
   justify-content: flex-start;
   max-width: 100%;
   overflow: hidden;
@@ -99,7 +100,18 @@ textarea {
   word-wrap: break-word;
 
   .icon {
+    color: inherit;
     transition: opacity $input-transition;
+
+    &:first-child {
+      padding-left: 0.1875rem;
+      margin-right: -0.1875rem;
+    }
+
+    &:last-child {
+      padding-right: 0.1875rem;
+      margin-left: -0.1875rem;
+    }
   }
 
   &:hover {

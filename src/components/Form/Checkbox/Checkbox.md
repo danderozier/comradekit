@@ -3,7 +3,6 @@
   <div>
     <Checkbox
       v-model="value"
-      :native-value="nativeValue"
       :indeterminate="indeterminate"
       :is-disabled="isDisabled"
       :is-invalid="isInvalid"
@@ -11,16 +10,13 @@
       @change="onChange"
       >Click me!</Checkbox
     >
-    <pre>Selected value: {{ value }}</pre>
+    <pre><code>Value: {{ value }}</code></pre>
     <CheckboxField label="Options">
       <Checkbox v-model="indeterminate">Indeterminate</Checkbox>
       <Checkbox v-model="isDisabled">Disabled</Checkbox>
       <Checkbox v-model="isInvalid">Invalid</Checkbox>
       <Checkbox v-model="isLoading">Loading</Checkbox>
     </CheckboxField>
-    <Field label="Native Value">
-      <TextInput v-model="nativeValue" />
-    </Field>
   </div>
 </template>
 
@@ -32,9 +28,61 @@ export default {
       isDisabled: false,
       isInvalid: false,
       isLoading: false,
-      nativeValue: undefined,
       value: undefined,
-      secondValue: []
+    }
+  },
+  methods: {
+    onChange() {
+      this.indeterminate = false
+    }
+  }
+}
+</script>
+```
+
+```vue
+<template>
+  <div>
+    <Checkbox v-model="value" true-value="yes" false-value="no">Custom true/false values</Checkbox>
+    <pre><code>Value: {{ value }}</code></pre>
+
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      value: undefined
+    }
+  },
+  methods: {
+    onChange() {
+      this.indeterminate = false
+    }
+  }
+}
+</script>
+```
+
+
+
+```vue
+<template>
+  <div>
+    <Checkbox v-model="value" native-value="dilbert">Dilbert</Checkbox>
+    <Checkbox v-model="value" native-value="dogbert">Dogbert</Checkbox>
+    <Checkbox v-model="value" native-value="catbert">Catbert</Checkbox>
+    <Checkbox v-model="value" native-value="ratbert">Ratbert</Checkbox>
+    <pre><code>Value: {{ value }}</code></pre>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      value: []
     }
   },
   methods: {

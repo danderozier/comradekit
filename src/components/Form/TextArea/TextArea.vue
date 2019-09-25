@@ -1,33 +1,38 @@
 <template>
   <TextInputWrapper
+    ref="wrapper"
+    :is-disabled="isDisabled"
     :is-focused="isFocused"
     :is-invalid="isInvalid"
     :is-loading="isLoading"
-    :is-disabled="isDisabled"
     :style="{ width }"
   >
     <textarea
       ref="input"
-      v-bind="$attrs"
       v-model="computedValue"
-      :auto="height === 'auto'"
+      v-on="inputListeners"
+      :aria-describedby="ariaDescribedby"
+      :aria-labelledby="ariaLabelledby"
+      :aria-required="required"
+      :class="inputClasses"
       :disabled="isDisabled"
       :rows="rows"
       :style="{ height: currentHeight, maxHeight }"
-      v-on="listeners"
       @keydown="resize"
       @input="resize"
+      @focus="onInputFocus"
+      @blur="onInputBlur"
     />
   </TextInputWrapper>
 </template>
 
 <script>
 import TextInputWrapper from "@components/Form/_TextInputWrapper";
-import inputtable from "@mixins/inputtable";
+import InputMixin from "@mixins/InputMixin";
 
 export default {
   name: "TextArea",
-  mixins: [inputtable],
+  mixins: [InputMixin],
   components: { TextInputWrapper },
   props: {
     height: {
@@ -44,7 +49,7 @@ export default {
     },
     value: {
       type: String,
-      required: true
+      default: undefined
     },
     width: {
       type: [Number, String],
@@ -57,10 +62,15 @@ export default {
     };
   },
   computed: {
+    inputClasses() {
+      return {
+        "has-auto-height": this.height === "auto"
+      };
+    },
     /**
-     * Strip out 'input' listener.
+     * Filter listeners before passing along to input.
      */
-    listeners() {
+    inputListeners() {
       // eslint-disable-next-line
       const { input, ...listeners } = this.$listeners;
       return listeners;
@@ -85,6 +95,10 @@ export default {
         }
       });
     }
+  },
+  inject: {
+    ariaDescribedby: { default: null },
+    ariaLabelledby: { default: null }
   }
 };
 </script>
@@ -97,7 +111,7 @@ textarea {
   color: inherit;
 }
 
-textarea[auto] {
+textarea.has-auto-height {
   resize: none;
 }
 </style>

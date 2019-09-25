@@ -1,0 +1,37 @@
+.inline-input {
+  align-items: center;
+  cursor: pointer;
+  display: inline-flex;
+  position: relative;
+
+  &:active {
+    outline: none;
+  }
+
+  // Hide native input by centering it in the component.
+  input[type="checkbox"],
+  input[type="radio"] {
+    left: 50%;
+    margin: 0;
+    opacity: 0;
+    padding: 0;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+  }
+
+  .label {
+    font-size: $input-font-size;
+    line-height: 1;
+    padding: $input-border-width $input-padding;
+  }
+
+  /**
+   * Disabled State
+  **/
+  &[is-disabled] {
+    cursor: default;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}

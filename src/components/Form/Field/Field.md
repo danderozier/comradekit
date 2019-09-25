@@ -4,6 +4,7 @@
     <Field :label="label" :required="isRequired" :errors="displayErrors" :description="description" :is-disabled="true">
       <TextInput :is-invalid="isInvalid" v-model="text"/>
     </Field>
+    <pre>Value: {{ text }}</pre>
     <Field label="Field with Checkboxes">
       <Checkbox v-model="isInvalid">Invalid</Checkbox>
       <Checkbox v-model="isRequired">Required</Checkbox>

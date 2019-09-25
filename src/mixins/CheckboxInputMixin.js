@@ -49,7 +49,7 @@ export default {
     this.id = this._uid;
   },
   methods: {
-    onChange(e) {
+    onInputChange(e) {
       this.$emit("change", e);
     },
     onBlur(e) {
