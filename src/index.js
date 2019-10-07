@@ -1,7 +1,7 @@
 import * as components from "./components";
 
 import config, { setOptions } from "@utilities/config";
-import { use, registerComponentProgrammatic } from "@utilities/helpers";
+import { use } from "@utilities/helpers";
 
 /**
  * Vue plugin for Comradekit.

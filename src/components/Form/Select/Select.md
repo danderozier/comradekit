@@ -8,7 +8,7 @@
       :options="options"
       :allow-create="allowCreate"
       @create="onCreate"/>
-    <pre>Value: {{ value }}</pre>
+    <pre><code>Value: {{ value }}</code></pre>
   </div>
 </template>
 

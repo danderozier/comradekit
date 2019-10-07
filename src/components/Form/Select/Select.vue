@@ -1,5 +1,5 @@
 <template>
-  <div class="select">
+  <div class="select" ref="wrapper">
     <Dropdown ref="dropdown">
       <SelectInputWrapper
         slot="trigger"
@@ -8,12 +8,12 @@
         :is-invalid="isInvalid"
       >
         <input
-          type="text"
           ref="input"
+          type="text"
           v-model="searchText"
           :placeholder="!value ? placeholder : ''"
-          @focus="onFocus"
-          @blur="onBlur"
+          @focus="onInputFocus"
+          @blur="onInputBlur"
           @keydown.delete="onKeyboardDelete"
         />
         <TextRenderer v-if="!searchText" :value="labelFor(value)" />

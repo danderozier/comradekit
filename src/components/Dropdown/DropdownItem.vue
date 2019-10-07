@@ -1,25 +1,19 @@
 <template>
   <div
     class="dropdown-item"
-    tabindex="0"
     :disabled="disabled"
     :selected="selected"
-    :focused="isFocused"
+    :active="isActive"
     @click="onClick"
-    @keydown="onKeydown"
     @mouseover="onMouseover"
-    @mouseleave="onMouseleave"
-    @focus="onFocus"
-    @blur="onBlur"
     v-on="$listeners"
   >
-    <slot></slot> {{ isFocused }}
+    <!-- @slot Item content -->
+    <slot></slot> {{ isActive }}
   </div>
 </template>
 
 <script>
-import { keyCodes } from "@utilities/helpers";
-
 export default {
   name: "DropdownItem",
   props: {
@@ -40,62 +34,27 @@ export default {
       default: false
     }
   },
+  inject: {
+    eventBus: { default: undefined }
+  },
   data() {
     return {
-      isFocused: false
+      isActive: false
     };
   },
-  // watch: {
-  //   isFocused: {
-  //     handler(isFocused) {
-  //       if (isFocused) {
-  //         this.$nextTick(() => this.$el.focus());
-  //       } else {
-  //         this.$nextTick(() => this.$el.blur());
-  //       }
-  //     },
-  //     immediate: true
-  //   }
-  // },
   methods: {
-    dilb() {
-      console.log("dingle");
-      this.isFocused = true;
-    },
     onClick() {
-      this.$parent.$emit("select", this);
-      this.$emit("select");
-    },
-    onFocus() {
-      // this.isFocused = true;
-    },
-    onBlur() {
-      // this.isFocused = false;
+      this.$emit("select", this);
     },
     onMouseover() {
-      if (!this.focusable) return;
-
-      this.$parent.$emit("hover", this);
-      this.isFocused = true;
-    },
-    onMouseleave() {
-      this.isFocused = false;
-    },
-    onKeydown(e) {
-      switch (e.keyCode) {
-        case keyCodes.enter:
-          this.onClick();
-          break;
-        case keyCodes.up:
-          this.$parent.$emit("previous");
-          break;
-        case keyCodes.down:
-          this.$parent.$emit("next");
-          break;
-        case keyCodes.esc:
-          this.$parent.$emit("cancel");
-          break;
+      if (this.eventBus) {
+        this.eventBus.$emit("item-hover", this);
       }
+    }
+  },
+  watch: {
+    isActive() {
+      console.log("DropdownItem isActive changed", this.isActive);
     }
   }
 };
@@ -111,7 +70,7 @@ export default {
     // outline: none;
   }
 
-  &[focused]:not([disabled]):not([selected]) {
+  &[active]:not([disabled]):not([selected]) {
     background: $dropdown-item-background-color-hover;
     color: $dropdown-item-color-hover;
   }

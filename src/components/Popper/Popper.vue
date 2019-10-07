@@ -5,8 +5,7 @@ export default {
   name: "Popper",
   props: {
     targetElement: {
-      type: HTMLElement,
-      required: true
+      type: HTMLElement
     },
     placement: {
       type: String,
@@ -42,9 +41,18 @@ export default {
       popper: null
     };
   },
+  watch: {
+    targetElement() {
+      console.log("target element!");
+    }
+  },
   mounted() {
-    this.$nextTick(() => {
-      this.initPopper();
+    this.$watch("targetElement", el => {
+      if (el) {
+        this.$nextTick(() => {
+          this.initPopper();
+        });
+      }
     });
   },
   beforeDestroy() {

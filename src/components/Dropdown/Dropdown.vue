@@ -1,39 +1,33 @@
 <template>
   <div class="dropdown" ref="wrapper">
     <div
-      @click="toggle"
       aria-haspopup="true"
       class="dropdown__trigger"
       ref="trigger"
       role="button"
-      @keyup.down="nextItem"
-      @keyup.up="prevItem"
+      @click="toggle"
+      @focusout="onFocusout"
+      @keydown="onKeydown"
     >
       <!-- @slot Dropdown trigger (button, input, etc) -->
-      <slot name="trigger" /> {{ focusedItemIndex }}
+      <slot name="trigger" />
     </div>
 
     <div class="dropdown__content" ref="content">
       <Popper
-        v-if="isOpen"
-        :target-element="this.$refs.trigger"
         placement="bottom-start"
         :flip-variations-by-content="true"
-        @hover="onItemHover"
-        @previous="prevItem"
-        @next="nextItem"
-        @select="onSelect"
-        @cancel="close"
+        :target-element="targetElement"
       >
         <div
-          :role="ariaRole"
-          :aria-hidden="!isOpen"
+          v-show="isOpen"
           class="dropdown-content"
-          ref="contentz"
-          tabindex="-1"
+          :aria-hidden="!isOpen"
+          :class="{ 'is-scrollable': isScrollable }"
+          :role="ariaRole"
         >
           <!-- @slot Dropdown content -->
-          <slot ref="dilb" />
+          <slot />
         </div>
       </Popper>
     </div>
@@ -41,118 +35,117 @@
 </template>
 
 <script>
+import Vue from "vue";
 import Popper from "@components/Popper/Popper";
 import { clickaway } from "@mixins";
 import { inclusionValidator } from "@utilities/propValidators";
-import _ from "lodash";
+import { keyCodes } from "@utilities/helpers";
+
+const eventBus = new Vue();
 
 export default {
   name: "Dropdown",
   mixins: [clickaway],
   components: { Popper },
+  /**
+   * Provide an event bus to pass keydown events
+   * to components in the dropdown content.
+   */
+  provide() {
+    return { eventBus };
+  },
   data() {
     return {
       isOpen: false,
-      isFocused: false,
-      items: [],
-      focusedItemIndex: undefined
+      targetElement: null
     };
   },
+  mounted() {
+    console.log(this.$refs.trigger);
+    this.targetElement = this.$refs.trigger;
+  },
   props: {
+    /**
+     * Provide the ARIA role for the dropdown.
+     * Options include `list`, `menu`
+     */
     ariaRole: {
       type: String,
       required: false,
       validator: prop => {
         inclusionValidator(prop, "list", "menu");
       }
+    },
+    /**
+     * If true, dropdown height will be limited and
+     * the dropdown content will scroll.
+     */
+    isScrollable: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
-    toggle() {
-      this.isOpen = !this.isOpen;
+    /**
+     * Handle keydown events.
+     */
+    onKeydown(e) {
+      console.log("Dropdown detects keydown", e);
+
+      switch (e.keyCode) {
+        // Pressing up or down opens the dropdown.
+        case keyCodes.up:
+          this.open();
+          break;
+        case keyCodes.down:
+          this.open();
+          break;
+        // Pressing escape closes the dropdown.
+        case keyCodes.esc:
+          this.close();
+          break;
+      }
+      // Pass keydown events along to children injecting
+      // the provided event bus.
+      eventBus.$emit("keydown", e);
     },
-    close() {
-      this.isOpen = false;
-      this.$emit("close");
-    },
-    open() {
-      this.isOpen = true;
-      this.$emit("open");
-    },
-    onSelect() {
+    /**
+     * Handle when the trigger loses focus.
+     */
+    onFocusout() {
+      console.log("onfocuseout");
       this.close();
     },
+    /**
+     * Handle clicks away from the dropdown.
+     */
     onClickaway() {
       this.close();
     },
-    onItemHover(item) {
-      this.focusedItemIndex = _.findIndex(
-        this.items,
-        i => i._uid === item._uid
-      );
+    /**
+     * Toggle the dropdown.
+     * @public
+     */
+    toggle() {
+      this.isOpen = !this.isOpen;
     },
-    prevItem() {
-      const item = this.items[this.focusedItemIndex - 1];
-
-      if (!item) {
-        if (!this.items.length) return;
-
-        this.focusedItemIndex = this.items.length;
-        this.prevItem();
-        return;
-      } else if (item.isDisabled) {
-        this.focusedItemIndex--;
-        this.prevItem();
-        return;
-      } else {
-        this.focusedItemIndex--;
-      }
+    /**
+     * Close the dropdown.
+     * @public
+     */
+    close() {
+      this.isOpen = false;
+      this.$emit("close");
+      eventBus.$emit("close");
     },
-    nextItem() {
-      const item = this.items[this.focusedItemIndex + 1];
-
-      if (!item) {
-        if (!this.items.length) return;
-
-        this.focusedItemIndex = -1;
-        this.nextItem();
-        return;
-      } else if (item.isDisabled) {
-        this.focusedItemIndex++;
-        this.nextItem();
-        return;
-      } else {
-        this.focusedItemIndex++;
-      }
-    },
-    updateItems() {
-      this.items = _.map(
-        _.filter(this.$slots.default, el => {
-          return (
-            el.componentInstance &&
-            el.componentInstance.$options._componentTag === "DropdownItem"
-          );
-        }),
-        el => {
-          return el.componentInstance;
-        }
-      );
-    }
-  },
-  watch: {
-    isOpen(value) {
-      if (value) {
-        this.$nextTick(() => {
-          this.updateItems();
-        });
-      } else {
-        this.focusedItemIndex = undefined;
-      }
-    },
-    focusedItemIndex() {
-      this.items.forEach((item, index) => {
-        item.isFocused = this.focusedItemIndex === index;
-      });
+    /**
+     * Open the dropdown.
+     * @public
+     */
+    open() {
+      this.isOpen = true;
+      this.$emit("open");
+      eventBus.$emit("open");
     }
   }
 };
@@ -192,6 +185,11 @@ $dropdown-margin: 0.5rem;
     &:focus {
       outline: none;
     }
+
+    // &.is-scrollable {
+    //   max-height: 20rem;
+    //   overflow: scroll;
+    // }
   }
 }
 </style>

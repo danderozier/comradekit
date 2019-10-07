@@ -13,6 +13,7 @@
   "dependencies": {
     "calendar-dates": "^2.6.0",
     "core-js": "^2.6.5",
+    "date-fns": "^2.4.0",
     "eva-icons": "^1.1.1",
     "moment": "^2.24.0",
     "popper.js": "^1.15.0",

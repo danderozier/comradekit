@@ -1,5 +1,5 @@
 <template>
-  <div class="datepicker">
+  <div class="datepicker" ref="wrapper">
     <Dropdown ref="dropdown">
       <SelectInputWrapper
         slot="trigger"
@@ -12,9 +12,10 @@
           ref="input"
           v-model="searchText"
           :placeholder="!value ? placeholder : ''"
-          @focus="onFocus"
-          @blur="onBlur"
+          @focus="onInputFocus"
+          @blur="onInputBlur"
           @keydown.delete="onKeyboardDelete"
+          @keydown="dingle"
         />
         <TextRenderer v-if="!searchText" :value="labelFor(value)" />
       </SelectInputWrapper>
@@ -105,6 +106,9 @@ export default {
     }
   },
   methods: {
+    dingle(e) {
+      console.log("dingle", e);
+    },
     isSelected(value) {
       return this.value === value;
     },
